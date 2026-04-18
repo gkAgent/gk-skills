@@ -40,6 +40,9 @@ These skills enforce 5 rules that fix all three — permanently.
 | Skill | Migration Path | Install |
 |---|---|---|
 | [migration-vbnet-typescript](./migration-vbnet-typescript/SKILL.md) | VB.NET → TypeScript/React (5-phase) | `npx skills@latest add gkAgent/gk-skills/migration-vbnet-typescript` |
+| [migration-csharp-typescript](./migration-csharp-typescript/SKILL.md) | C# (.NET) → TypeScript/Next.js/NestJS | `npx skills@latest add gkAgent/gk-skills/migration-csharp-typescript` |
+| [migration-vbnet-aspnetcore](./migration-vbnet-aspnetcore/SKILL.md) | VB.NET → ASP.NET Core (同一エコシステム) | `npx skills@latest add gkAgent/gk-skills/migration-vbnet-aspnetcore` |
+| [migration-cobol-typescript](./migration-cobol-typescript/SKILL.md) | COBOL → TypeScript/Node.js (COMP-3/JCL対応) | `npx skills@latest add gkAgent/gk-skills/migration-cobol-typescript` |
 
 ### Productivity
 
@@ -87,6 +90,42 @@ npx skills@latest add gkAgent/gk-skills/migration-vbnet-typescript
 
 ---
 
+### [migration-csharp-typescript](./migration-csharp-typescript/SKILL.md) — C# → TypeScript Migration
+
+LINQ → TS array methods, EF Core → Prisma, ASP.NET Core Controller → Next.js API Route.
+
+**Covers:** ASP.NET Core MVC/Web API · WinForms/WPF · SignalR → Socket.IO · COM Interop alternatives
+
+```bash
+npx skills@latest add gkAgent/gk-skills/migration-csharp-typescript
+```
+
+---
+
+### [migration-vbnet-aspnetcore](./migration-vbnet-aspnetcore/SKILL.md) — VB.NET → ASP.NET Core
+
+Stay within .NET. Lower risk than a full-stack rewrite. Mechanical `On Error GoTo` → `try/catch` conversion.
+
+**Covers:** WebForms → Razor Pages · DataSet → EF Core · Module globals → DI · Forms Auth → Cookie Auth
+
+```bash
+npx skills@latest add gkAgent/gk-skills/migration-vbnet-aspnetcore
+```
+
+---
+
+### [migration-cobol-typescript](./migration-cobol-typescript/SKILL.md) — COBOL → TypeScript Migration
+
+The hardest migration. COMP-3 packed decimal → decimal.js, REDEFINES → Union/Buffer, JCL → node-cron.
+
+**Covers:** COMP-3/OCCURS/REDEFINES · VSAM/順編成 → Node.js streams · EBCDIC → UTF-8 · DB2 → PostgreSQL
+
+```bash
+npx skills@latest add gkAgent/gk-skills/migration-cobol-typescript
+```
+
+---
+
 ### [todo-resolution-ja](./todo-resolution-ja/SKILL.md) — TODO Resolution (2-Pass)
 
 Clear accumulated TODOs from spec documents. Extract → categorize → generate questions → apply diff update.
@@ -99,13 +138,22 @@ npx skills@latest add gkAgent/gk-skills/todo-resolution-ja
 
 ---
 
-## Install All 4 Skills
+## Install All Skills
 
+### Core 4 (Start here)
 ```bash
 npx skills@latest add gkAgent/gk-skills/spec-gen-enterprise-ja
 npx skills@latest add gkAgent/gk-skills/code-review-enterprise-ja
 npx skills@latest add gkAgent/gk-skills/migration-vbnet-typescript
 npx skills@latest add gkAgent/gk-skills/todo-resolution-ja
+```
+
+### Migration Pack (4 paths)
+```bash
+npx skills@latest add gkAgent/gk-skills/migration-vbnet-typescript
+npx skills@latest add gkAgent/gk-skills/migration-csharp-typescript
+npx skills@latest add gkAgent/gk-skills/migration-vbnet-aspnetcore
+npx skills@latest add gkAgent/gk-skills/migration-cobol-typescript
 ```
 
 ---
