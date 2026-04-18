@@ -53,6 +53,29 @@ These skills enforce 5 rules that fix all three — permanently.
 | [migration-csharp-typescript](./migration-csharp-typescript/SKILL.md) | C# (.NET) → TypeScript/Next.js/NestJS | `npx skills@latest add gkAgent/gk-skills/migration-csharp-typescript` |
 | [migration-vbnet-aspnetcore](./migration-vbnet-aspnetcore/SKILL.md) | VB.NET → ASP.NET Core (同一エコシステム) | `npx skills@latest add gkAgent/gk-skills/migration-vbnet-aspnetcore` |
 | [migration-cobol-typescript](./migration-cobol-typescript/SKILL.md) | COBOL → TypeScript/Node.js (COMP-3/JCL対応) | `npx skills@latest add gkAgent/gk-skills/migration-cobol-typescript` |
+| [db-migration-oracle-postgresql](./db-migration-oracle-postgresql/SKILL.md) | Oracle → PostgreSQL (ROWNUM/PL/SQL/型変換完全対応) | `npx skills@latest add gkAgent/gk-skills/db-migration-oracle-postgresql` |
+
+### Quality & Security
+
+| Skill | Use When | Install |
+|---|---|---|
+| [security-review-web](./security-review-web/SKILL.md) | OWASP Top 10 脆弱性診断（Web アプリ） | `npx skills@latest add gkAgent/gk-skills/security-review-web` |
+| [perf-review-sql](./perf-review-sql/SKILL.md) | N+1・インデックス・スロークエリ性能レビュー | `npx skills@latest add gkAgent/gk-skills/perf-review-sql` |
+| [refactor-enterprise-ja](./refactor-enterprise-ja/SKILL.md) | 移行せず現行言語のままコード品質改善 | `npx skills@latest add gkAgent/gk-skills/refactor-enterprise-ja` |
+
+### Testing
+
+| Skill | Use When | Install |
+|---|---|---|
+| [test-gen-enterprise-ja](./test-gen-enterprise-ja/SKILL.md) | テスト仕様書 + JUnit/Jest/xUnit テストコード生成 | `npx skills@latest add gkAgent/gk-skills/test-gen-enterprise-ja` |
+
+### API & Documentation
+
+| Skill | Use When | Install |
+|---|---|---|
+| [api-spec-openapi](./api-spec-openapi/SKILL.md) | 既存コードから OpenAPI 3.0 仕様書を生成 | `npx skills@latest add gkAgent/gk-skills/api-spec-openapi` |
+| [onboarding-doc-ja](./onboarding-doc-ja/SKILL.md) | 新規参画者向けシステム概要書・環境構築手順生成 | `npx skills@latest add gkAgent/gk-skills/onboarding-doc-ja` |
+| [incident-rca-ja](./incident-rca-ja/SKILL.md) | 障害報告書・根本原因分析（5 Why）・再発防止計画 | `npx skills@latest add gkAgent/gk-skills/incident-rca-ja` |
 
 ### Productivity
 
