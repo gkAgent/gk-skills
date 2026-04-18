@@ -1,207 +1,238 @@
 # gk-skills — Enterprise Claude Code Skills for Japanese SI Teams
 
-> Install any skill in one command:
-> ```
-> npx skills@latest add gkAgent/gk-skills/spec-gen-enterprise-ja
-> ```
-
-Claude Code Skills built from real Japanese SI projects:
-300k-line VB.NET migrations, Oracle 19c systems, COBOL batch modernization.
-
-**Why these exist:** Standard Claude prompts forget context, repeat mistakes, and stop mid-task.
-These skills enforce 5 rules that fix all three — permanently.
+> **33 skills** covering the full Japanese SI project lifecycle.
+> Built from real projects: 300k-line VB.NET migrations, Oracle 19c systems, COBOL batch modernization.
 
 ---
 
-## Skills
+## Quick Start
 
-### Spec Generation (詳細仕様書)
+```bash
+# 1. Install a skill (one-time per skill)
+npx skills@latest add gkAgent/gk-skills/spec-gen-enterprise-ja
 
-| Skill | Languages / Stack | Install |
+# 2. Open Claude Code in your project
+cd /path/to/your-project
+claude
+
+# 3. Invoke the skill
+/spec-gen-enterprise-ja
+```
+
+Claude asks clarifying questions first (Phase 0), then runs to completion — no mid-task stops.
+
+---
+
+## Which Skill Do I Need?
+
+| Situation | Skill to use |
+|---|---|
+| **コードから仕様書を書きたい** | `spec-gen-enterprise-ja` (全言語) or 言語×DB 個別版 |
+| **本番リリース前にコードをレビューしたい** | `code-review-[java\|csharp\|typescript\|vbnet\|cobol]` |
+| **セキュリティ診断をしたい (OWASP)** | `security-review-web` |
+| **スロークエリ / N+1 を直したい** | `perf-review-sql` |
+| **VB.NET → TypeScript に移行したい** | `migration-vbnet-typescript` |
+| **C# → TypeScript に移行したい** | `migration-csharp-typescript` |
+| **VB.NET → ASP.NET Core に移行したい（.NET内）** | `migration-vbnet-aspnetcore` |
+| **COBOL → TypeScript/Node.js に移行したい** | `migration-cobol-typescript` |
+| **Oracle → PostgreSQL に移行したい** | `db-migration-oracle-postgresql` |
+| **移行せずコードを整理したい** | `refactor-enterprise-ja` |
+| **テスト仕様書とテストコードを生成したい** | `test-gen-enterprise-ja` |
+| **OpenAPI 仕様書を既存コードから生成したい** | `api-spec-openapi` |
+| **新規参画者向けドキュメントを作りたい** | `onboarding-doc-ja` |
+| **障害報告書・RCA を書きたい** | `incident-rca-ja` |
+| **仕様書の TODO を解消したい** | `todo-resolution-ja` |
+
+---
+
+## Skills (33)
+
+### Spec Generation (詳細仕様書) — 14 skills
+
+> **迷ったら `spec-gen-enterprise-ja`。** 特定の言語×DBに深い内容が必要な場合は個別版。
+
+| Skill | Stack | Install |
 |---|---|---|
 | [spec-gen-enterprise-ja](./spec-gen-enterprise-ja/SKILL.md) | Java × Oracle/PG/MySQL/MSSQL + TypeScript + C# + VB.NET + COBOL | `npx skills@latest add gkAgent/gk-skills/spec-gen-enterprise-ja` |
-| [spec-gen-java-oracle](./spec-gen-java-oracle/SKILL.md) | Java × Oracle (MyBatis/JPA/JDBC, ROWNUM/NUMBER精度) | `npx skills@latest add gkAgent/gk-skills/spec-gen-java-oracle` |
-| [spec-gen-java-postgresql](./spec-gen-java-postgresql/SKILL.md) | Java × PostgreSQL (Spring Data JPA/Hibernate, JSONB/UUID) | `npx skills@latest add gkAgent/gk-skills/spec-gen-java-postgresql` |
-| [spec-gen-java-mysql](./spec-gen-java-mysql/SKILL.md) | Java × MySQL (MyBatis/JPA, utf8mb4/TINYINT(1)/UPSERT) | `npx skills@latest add gkAgent/gk-skills/spec-gen-java-mysql` |
-| [spec-gen-java-sqlserver](./spec-gen-java-sqlserver/SKILL.md) | Java × SQL Server (MyBatis/JPA, MERGE/IDENTITY/Azure AD) | `npx skills@latest add gkAgent/gk-skills/spec-gen-java-sqlserver` |
+| [spec-gen-java-oracle](./spec-gen-java-oracle/SKILL.md) | Java × Oracle (MyBatis/JPA, ROWNUM/NUMBER/BindByName) | `npx skills@latest add gkAgent/gk-skills/spec-gen-java-oracle` |
+| [spec-gen-java-postgresql](./spec-gen-java-postgresql/SKILL.md) | Java × PostgreSQL (Spring Data JPA, JSONB/UUID/N+1) | `npx skills@latest add gkAgent/gk-skills/spec-gen-java-postgresql` |
+| [spec-gen-java-mysql](./spec-gen-java-mysql/SKILL.md) | Java × MySQL (utf8mb4/TINYINT(1)/ON DUPLICATE KEY) | `npx skills@latest add gkAgent/gk-skills/spec-gen-java-mysql` |
+| [spec-gen-java-sqlserver](./spec-gen-java-sqlserver/SKILL.md) | Java × SQL Server (MERGE/IDENTITY/NVARCHAR/Azure AD) | `npx skills@latest add gkAgent/gk-skills/spec-gen-java-sqlserver` |
 | [spec-gen-typescript-postgresql](./spec-gen-typescript-postgresql/SKILL.md) | TypeScript × PostgreSQL (Prisma/Drizzle/pg) | `npx skills@latest add gkAgent/gk-skills/spec-gen-typescript-postgresql` |
 | [spec-gen-typescript-mysql](./spec-gen-typescript-mysql/SKILL.md) | TypeScript × MySQL / PlanetScale | `npx skills@latest add gkAgent/gk-skills/spec-gen-typescript-mysql` |
-| [spec-gen-typescript-sqlserver](./spec-gen-typescript-sqlserver/SKILL.md) | TypeScript × SQL Server (Prisma/mssql, MERGE/NVARCHAR/Azure SQL) | `npx skills@latest add gkAgent/gk-skills/spec-gen-typescript-sqlserver` |
+| [spec-gen-typescript-sqlserver](./spec-gen-typescript-sqlserver/SKILL.md) | TypeScript × SQL Server (Prisma/mssql, Azure SQL) | `npx skills@latest add gkAgent/gk-skills/spec-gen-typescript-sqlserver` |
 | [spec-gen-csharp-sqlserver](./spec-gen-csharp-sqlserver/SKILL.md) | C# × SQL Server (ASP.NET Core/WinForms/WPF) | `npx skills@latest add gkAgent/gk-skills/spec-gen-csharp-sqlserver` |
-| [spec-gen-csharp-oracle](./spec-gen-csharp-oracle/SKILL.md) | C# × Oracle (ODP.NET BindByName/NUMBER→decimal/ROWNUM) | `npx skills@latest add gkAgent/gk-skills/spec-gen-csharp-oracle` |
+| [spec-gen-csharp-oracle](./spec-gen-csharp-oracle/SKILL.md) | C# × Oracle (ODP.NET BindByName/NUMBER→decimal) | `npx skills@latest add gkAgent/gk-skills/spec-gen-csharp-oracle` |
 | [spec-gen-csharp-postgresql](./spec-gen-csharp-postgresql/SKILL.md) | C# × PostgreSQL (EF Core Npgsql, JSONB/UUID/arrays) | `npx skills@latest add gkAgent/gk-skills/spec-gen-csharp-postgresql` |
 | [spec-gen-vbnet-sqlserver](./spec-gen-vbnet-sqlserver/SKILL.md) | VB.NET × SQL Server (WinForms/WebForms/WPF) | `npx skills@latest add gkAgent/gk-skills/spec-gen-vbnet-sqlserver` |
-| [spec-gen-vbnet-oracle](./spec-gen-vbnet-oracle/SKILL.md) | VB.NET × Oracle (ODP.NET/DataAdapter, レガシー仕様化) | `npx skills@latest add gkAgent/gk-skills/spec-gen-vbnet-oracle` |
+| [spec-gen-vbnet-oracle](./spec-gen-vbnet-oracle/SKILL.md) | VB.NET × Oracle (ODP.NET/DataAdapter, レガシー) | `npx skills@latest add gkAgent/gk-skills/spec-gen-vbnet-oracle` |
 | [spec-gen-cobol-db2](./spec-gen-cobol-db2/SKILL.md) | COBOL × IBM DB2 (z/OS / LUW / CICS) | `npx skills@latest add gkAgent/gk-skills/spec-gen-cobol-db2` |
 
-### Code Review
+### Code Review — 6 skills
 
-| Skill | Languages | Install |
+> **迷ったら `code-review-enterprise-ja`。** 言語固有の深いチェックは個別版。
+
+| Skill | Focus | Install |
 |---|---|---|
 | [code-review-enterprise-ja](./code-review-enterprise-ja/SKILL.md) | Java + TypeScript + C# + VB.NET + COBOL | `npx skills@latest add gkAgent/gk-skills/code-review-enterprise-ja` |
-| [code-review-java](./code-review-java/SKILL.md) | Java (Spring Boot/MyBatis/JPA, @Transactional/N+1) | `npx skills@latest add gkAgent/gk-skills/code-review-java` |
-| [code-review-csharp](./code-review-csharp/SKILL.md) | C# (ASP.NET Core, async void/IDisposable/EF Core N+1) | `npx skills@latest add gkAgent/gk-skills/code-review-csharp` |
-| [code-review-typescript](./code-review-typescript/SKILL.md) | TypeScript / React / Next.js / NestJS | `npx skills@latest add gkAgent/gk-skills/code-review-typescript` |
-| [code-review-vbnet](./code-review-vbnet/SKILL.md) | VB.NET (WinForms/WebForms/WPF) | `npx skills@latest add gkAgent/gk-skills/code-review-vbnet` |
-| [code-review-cobol](./code-review-cobol/SKILL.md) | COBOL × DB2 / VSAM / CICS | `npx skills@latest add gkAgent/gk-skills/code-review-cobol` |
+| [code-review-java](./code-review-java/SKILL.md) | @Transactional自己呼び出し / N+1 / MyBatis `${}` / Modernizationスコア | `npx skills@latest add gkAgent/gk-skills/code-review-java` |
+| [code-review-csharp](./code-review-csharp/SKILL.md) | async void / HttpClient都度new / EF Core N+1 / [Authorize]漏れ | `npx skills@latest add gkAgent/gk-skills/code-review-csharp` |
+| [code-review-typescript](./code-review-typescript/SKILL.md) | any/unknown/as / dangerouslySetInnerHTML / env var 露出 | `npx skills@latest add gkAgent/gk-skills/code-review-typescript` |
+| [code-review-vbnet](./code-review-vbnet/SKILL.md) | On Error Resume Next / Option Strict Off / Modernizationスコア | `npx skills@latest add gkAgent/gk-skills/code-review-vbnet` |
+| [code-review-cobol](./code-review-cobol/SKILL.md) | SQLCODE完全性 / CURSOR対称性 / CICS SYNCPOINT | `npx skills@latest add gkAgent/gk-skills/code-review-cobol` |
 
-### Migration
+### Migration — 5 skills
 
-| Skill | Migration Path | Install |
+| Skill | Path | Install |
 |---|---|---|
-| [migration-vbnet-typescript](./migration-vbnet-typescript/SKILL.md) | VB.NET → TypeScript/React (5-phase) | `npx skills@latest add gkAgent/gk-skills/migration-vbnet-typescript` |
-| [migration-csharp-typescript](./migration-csharp-typescript/SKILL.md) | C# (.NET) → TypeScript/Next.js/NestJS | `npx skills@latest add gkAgent/gk-skills/migration-csharp-typescript` |
-| [migration-vbnet-aspnetcore](./migration-vbnet-aspnetcore/SKILL.md) | VB.NET → ASP.NET Core (同一エコシステム) | `npx skills@latest add gkAgent/gk-skills/migration-vbnet-aspnetcore` |
+| [migration-vbnet-typescript](./migration-vbnet-typescript/SKILL.md) | VB.NET → TypeScript/React (5フェーズ) | `npx skills@latest add gkAgent/gk-skills/migration-vbnet-typescript` |
+| [migration-csharp-typescript](./migration-csharp-typescript/SKILL.md) | C# → TypeScript/Next.js/NestJS | `npx skills@latest add gkAgent/gk-skills/migration-csharp-typescript` |
+| [migration-vbnet-aspnetcore](./migration-vbnet-aspnetcore/SKILL.md) | VB.NET → ASP.NET Core (.NET内、低リスク) | `npx skills@latest add gkAgent/gk-skills/migration-vbnet-aspnetcore` |
 | [migration-cobol-typescript](./migration-cobol-typescript/SKILL.md) | COBOL → TypeScript/Node.js (COMP-3/JCL対応) | `npx skills@latest add gkAgent/gk-skills/migration-cobol-typescript` |
 | [db-migration-oracle-postgresql](./db-migration-oracle-postgresql/SKILL.md) | Oracle → PostgreSQL (ROWNUM/PL/SQL/型変換完全対応) | `npx skills@latest add gkAgent/gk-skills/db-migration-oracle-postgresql` |
 
-### Quality & Security
+### Quality & Security — 3 skills
 
-| Skill | Use When | Install |
+| Skill | Focus | Install |
 |---|---|---|
-| [security-review-web](./security-review-web/SKILL.md) | OWASP Top 10 脆弱性診断（Web アプリ） | `npx skills@latest add gkAgent/gk-skills/security-review-web` |
-| [perf-review-sql](./perf-review-sql/SKILL.md) | N+1・インデックス・スロークエリ性能レビュー | `npx skills@latest add gkAgent/gk-skills/perf-review-sql` |
-| [refactor-enterprise-ja](./refactor-enterprise-ja/SKILL.md) | 移行せず現行言語のままコード品質改善 | `npx skills@latest add gkAgent/gk-skills/refactor-enterprise-ja` |
+| [security-review-web](./security-review-web/SKILL.md) | OWASP Top 10 (2021) 全項目 — IDOR/SQLi/JWT/SSRF | `npx skills@latest add gkAgent/gk-skills/security-review-web` |
+| [perf-review-sql](./perf-review-sql/SKILL.md) | N+1 / インデックス設計 / 実行計画 (Oracle/PG/MySQL/MSSQL) | `npx skills@latest add gkAgent/gk-skills/perf-review-sql` |
+| [refactor-enterprise-ja](./refactor-enterprise-ja/SKILL.md) | Fat イベントハンドラ→サービス層 / On Error GoTo→Try/Catch | `npx skills@latest add gkAgent/gk-skills/refactor-enterprise-ja` |
 
-### Testing
+### Testing — 1 skill
 
-| Skill | Use When | Install |
+| Skill | Focus | Install |
 |---|---|---|
-| [test-gen-enterprise-ja](./test-gen-enterprise-ja/SKILL.md) | テスト仕様書 + JUnit/Jest/xUnit テストコード生成 | `npx skills@latest add gkAgent/gk-skills/test-gen-enterprise-ja` |
+| [test-gen-enterprise-ja](./test-gen-enterprise-ja/SKILL.md) | テスト仕様書 + JUnit/Jest/xUnit コード生成 (同値分割/境界値) | `npx skills@latest add gkAgent/gk-skills/test-gen-enterprise-ja` |
 
-### API & Documentation
+### API & Documentation — 3 skills
 
-| Skill | Use When | Install |
+| Skill | Focus | Install |
 |---|---|---|
-| [api-spec-openapi](./api-spec-openapi/SKILL.md) | 既存コードから OpenAPI 3.0 仕様書を生成 | `npx skills@latest add gkAgent/gk-skills/api-spec-openapi` |
-| [onboarding-doc-ja](./onboarding-doc-ja/SKILL.md) | 新規参画者向けシステム概要書・環境構築手順生成 | `npx skills@latest add gkAgent/gk-skills/onboarding-doc-ja` |
-| [incident-rca-ja](./incident-rca-ja/SKILL.md) | 障害報告書・根本原因分析（5 Why）・再発防止計画 | `npx skills@latest add gkAgent/gk-skills/incident-rca-ja` |
+| [api-spec-openapi](./api-spec-openapi/SKILL.md) | 既存コードから OpenAPI 3.0 YAML 生成 | `npx skills@latest add gkAgent/gk-skills/api-spec-openapi` |
+| [onboarding-doc-ja](./onboarding-doc-ja/SKILL.md) | 新規参画者向けシステム概要書・環境構築手順 | `npx skills@latest add gkAgent/gk-skills/onboarding-doc-ja` |
+| [incident-rca-ja](./incident-rca-ja/SKILL.md) | 障害報告書・5 Why・顧客報告メール・再発防止計画 | `npx skills@latest add gkAgent/gk-skills/incident-rca-ja` |
 
-### Productivity
+### Productivity — 1 skill
 
-| Skill | Use When | Install |
+| Skill | Focus | Install |
 |---|---|---|
-| [todo-resolution-ja](./todo-resolution-ja/SKILL.md) | Spec docs have accumulated TODOs | `npx skills@latest add gkAgent/gk-skills/todo-resolution-ja` |
+| [todo-resolution-ja](./todo-resolution-ja/SKILL.md) | 仕様書に溜まった TODO を2パスで解消 | `npx skills@latest add gkAgent/gk-skills/todo-resolution-ja` |
 
 ---
 
-### [spec-gen-enterprise-ja](./spec-gen-enterprise-ja/SKILL.md) — All-in-One Spec Generation
+## How to Use
 
-Generate 詳細仕様書 (design specs) from existing source code.
+### Step 1: Claude Code をインストール（未インストールの場合）
 
-**Languages × DBs:** Java × Oracle/PostgreSQL/MySQL/SQL Server · TypeScript × all · C#/.NET · VB.NET · COBOL
+```bash
+npm install -g @anthropic-ai/claude-code
+```
 
-**Use when:** you need to document a legacy system, generate a spec from undocumented code, or produce 詳細仕様書 for a maintenance project.
+### Step 2: スキルをインストール
 
+```bash
+# 1つだけ試す場合
+npx skills@latest add gkAgent/gk-skills/spec-gen-enterprise-ja
+
+# 全部まとめてインストール
+npx skills@latest add gkAgent/gk-skills/spec-gen-enterprise-ja
+npx skills@latest add gkAgent/gk-skills/code-review-enterprise-ja
+npx skills@latest add gkAgent/gk-skills/security-review-web
+npx skills@latest add gkAgent/gk-skills/test-gen-enterprise-ja
+npx skills@latest add gkAgent/gk-skills/todo-resolution-ja
+```
+
+### Step 3: プロジェクトで Claude Code を起動してスキルを呼び出す
+
+```bash
+cd /path/to/your-java-project
+claude
+```
+
+```
+# Claude Code のプロンプトで
+/spec-gen-enterprise-ja
+```
+
+スキルが起動すると、対象システムの確認（Phase 0）から始まります。
+コードを貼るか、ファイルを `@` で参照するだけで出力が生成されます。
+
+### 動作例（spec-gen-enterprise-ja）
+
+```
+> /spec-gen-enterprise-ja
+
+移行対象を教えてください。
+現行: Java 17 / Spring Boot 3 / MyBatis 3
+DB: Oracle 19c
+規模: 80クラス / 40 Mapper ファイル
+
+> 上記の通りです。対象は src/main/java/com/example/service/EmployeeService.java です。
+
+## EmployeeService — 詳細仕様書
+
+### クラス概要
+...（以降、完全な仕様書が生成される）
+```
+
+---
+
+## Install Packs
+
+### はじめての1本（迷ったらこれ）
 ```bash
 npx skills@latest add gkAgent/gk-skills/spec-gen-enterprise-ja
 ```
 
----
-
-### [code-review-enterprise-ja](./code-review-enterprise-ja/SKILL.md) — Structured Code Review
-
-Language-specific code review with security-first checklists. Definitive output — not "this might be an issue."
-
-**Languages:** Java (8/11/17/21) · TypeScript/React · C# (.NET) · VB.NET · COBOL
-
-```bash
-npx skills@latest add gkAgent/gk-skills/code-review-enterprise-ja
-```
-
----
-
-### [migration-vbnet-typescript](./migration-vbnet-typescript/SKILL.md) — VB.NET → TypeScript Migration
-
-5-phase migration methodology. Risk assessment, code conversion patterns, stakeholder summary.
-
-**Covers:** WinForms · WebForms · WPF · Oracle/SQL Server → PostgreSQL/MySQL
-
-```bash
-npx skills@latest add gkAgent/gk-skills/migration-vbnet-typescript
-```
-
----
-
-### [migration-csharp-typescript](./migration-csharp-typescript/SKILL.md) — C# → TypeScript Migration
-
-LINQ → TS array methods, EF Core → Prisma, ASP.NET Core Controller → Next.js API Route.
-
-**Covers:** ASP.NET Core MVC/Web API · WinForms/WPF · SignalR → Socket.IO · COM Interop alternatives
-
-```bash
-npx skills@latest add gkAgent/gk-skills/migration-csharp-typescript
-```
-
----
-
-### [migration-vbnet-aspnetcore](./migration-vbnet-aspnetcore/SKILL.md) — VB.NET → ASP.NET Core
-
-Stay within .NET. Lower risk than a full-stack rewrite. Mechanical `On Error GoTo` → `try/catch` conversion.
-
-**Covers:** WebForms → Razor Pages · DataSet → EF Core · Module globals → DI · Forms Auth → Cookie Auth
-
-```bash
-npx skills@latest add gkAgent/gk-skills/migration-vbnet-aspnetcore
-```
-
----
-
-### [migration-cobol-typescript](./migration-cobol-typescript/SKILL.md) — COBOL → TypeScript Migration
-
-The hardest migration. COMP-3 packed decimal → decimal.js, REDEFINES → Union/Buffer, JCL → node-cron.
-
-**Covers:** COMP-3/OCCURS/REDEFINES · VSAM/順編成 → Node.js streams · EBCDIC → UTF-8 · DB2 → PostgreSQL
-
-```bash
-npx skills@latest add gkAgent/gk-skills/migration-cobol-typescript
-```
-
----
-
-### [todo-resolution-ja](./todo-resolution-ja/SKILL.md) — TODO Resolution (2-Pass)
-
-Clear accumulated TODOs from spec documents. Extract → categorize → generate questions → apply diff update.
-
-**Works with:** any language, any domain
-
-```bash
-npx skills@latest add gkAgent/gk-skills/todo-resolution-ja
-```
-
----
-
-## Install All Skills
-
-### Core 4 (Start here)
+### SI標準セット（spec + review + test + todo）
 ```bash
 npx skills@latest add gkAgent/gk-skills/spec-gen-enterprise-ja
 npx skills@latest add gkAgent/gk-skills/code-review-enterprise-ja
-npx skills@latest add gkAgent/gk-skills/migration-vbnet-typescript
+npx skills@latest add gkAgent/gk-skills/test-gen-enterprise-ja
 npx skills@latest add gkAgent/gk-skills/todo-resolution-ja
 ```
 
-### Migration Pack (4 paths)
+### セキュリティ・品質セット
+```bash
+npx skills@latest add gkAgent/gk-skills/security-review-web
+npx skills@latest add gkAgent/gk-skills/perf-review-sql
+npx skills@latest add gkAgent/gk-skills/code-review-enterprise-ja
+```
+
+### 移行プロジェクトセット（VB.NET案件）
 ```bash
 npx skills@latest add gkAgent/gk-skills/migration-vbnet-typescript
-npx skills@latest add gkAgent/gk-skills/migration-csharp-typescript
-npx skills@latest add gkAgent/gk-skills/migration-vbnet-aspnetcore
-npx skills@latest add gkAgent/gk-skills/migration-cobol-typescript
+npx skills@latest add gkAgent/gk-skills/code-review-vbnet
+npx skills@latest add gkAgent/gk-skills/refactor-enterprise-ja
+```
+
+### Oracle → PostgreSQL 移行セット
+```bash
+npx skills@latest add gkAgent/gk-skills/db-migration-oracle-postgresql
+npx skills@latest add gkAgent/gk-skills/spec-gen-java-oracle
+npx skills@latest add gkAgent/gk-skills/spec-gen-java-postgresql
 ```
 
 ---
 
-## The 5 Rules Behind Every Skill
+## Why These Exist
 
-Every skill in this repo enforces the same 5 principles. They come from watching Claude fail repeatedly on real enterprise projects.
+Standard Claude prompts have 3 failure modes on enterprise projects:
+
+1. **Forget context** — start over every session
+2. **Stop mid-task** — "I've covered the main points" after 30% of the code
+3. **Repeat mistakes** — same wrong pattern every time
+
+Every skill in this repo enforces 5 rules that fix all three:
 
 | Rule | What it fixes |
 |---|---|
-| **D1 — Question-driven start** | Claude generating specs before knowing the system |
+| **D1 — Question-driven start** | Claude generating specs before understanding the system |
 | **D2 — Full coverage, no self-stopping** | Claude deciding which files to skip |
-| **D3 — Files > Prompts** | Users writing 200-character prompts every session |
-| **D4 — 80% NOT instructions** | Vague positive instructions that Claude interprets loosely |
-| **D5 — No AI voice** | "It is important to note that..." filler in output |
+| **D3 — Files > Prompts** | Writing 200-character prompts every session |
+| **D4 — 80% NOT instructions** | Vague positive instructions Claude interprets loosely |
+| **D5 — No AI voice** | "It is important to note that..." filler in every output |
 
 ---
 
@@ -209,6 +240,8 @@ Every skill in this repo enforces the same 5 principles. They come from watching
 
 Built by [gkAgent](https://github.com/gkAgent) — a solo developer running a 14-member virtual AI company.
 
-These skills are extracted from the [AI Agent Development Guide](https://github.com/gkAgent/aidev-guide) — a 560+ file template collection for enterprise AI development in Japan.
+Extracted from real Japanese SI projects: a 300k-line VB.NET × Oracle system, COBOL batch modernization, Spring Boot × Oracle 19c codebases.
+
+If these skills saved you time, a ⭐ on this repo helps others find it.
 
 Issues and PRs welcome.
