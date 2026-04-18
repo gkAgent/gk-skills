@@ -242,7 +242,7 @@ Built by [gkAgent](https://github.com/gkAgent) — a solo developer running a 14
 
 Extracted from real Japanese SI projects: a 300k-line VB.NET × Oracle system, COBOL batch modernization, Spring Boot × Oracle 19c codebases.
 
-These skills are part of the [AI Agent Development Guide](https://note.com/g_k4521) — a comprehensive template collection and methodology for enterprise AI development in Japan (Japanese, paid).
+These skills are part of the [AI Agent Development Guide](https://aidev-guide.pages.dev/) — a comprehensive template collection and methodology for enterprise AI development in Japan (Japanese, paid).
 
 If these skills saved you time, a ⭐ on this repo helps others find it.
 
