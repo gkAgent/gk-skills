@@ -1,6 +1,6 @@
 # gk-skills — Enterprise Claude Code Skills for Japanese SI Teams
 
-> **33 skills** covering the full Japanese SI project lifecycle.
+> **39 skills** covering the full Japanese SI project lifecycle.
 > Built from real projects: 300k-line VB.NET migrations, Oracle 19c systems, COBOL batch modernization.
 
 ---
@@ -42,6 +42,12 @@ Claude asks clarifying questions first (Phase 0), then runs to completion — no
 | **新規参画者向けドキュメントを作りたい** | `onboarding-doc-ja` |
 | **障害報告書・RCA を書きたい** | `incident-rca-ja` |
 | **仕様書の TODO を解消したい** | `todo-resolution-ja` |
+| **DBにClaudeから直接クエリしたい** | `mcp-setup-db` |
+| **GitHub をClaudeから操作したい (Issues/PR/Actions)** | `mcp-setup-github` |
+| **監視ツール (Datadog/Sentry) をClaudeから確認したい** | `mcp-setup-monitoring` |
+| **Cloudflare Workers/D1/R2/KV をClaudeから操作したい** | `mcp-setup-cloudflare` |
+| **Slack/LINE/Discord の通知をClaudeから送りたい** | `mcp-setup-communication` |
+| **既存の .mcp.json のセキュリティを診断したい** | `mcp-audit` |
 
 ---
 
@@ -118,6 +124,19 @@ Claude asks clarifying questions first (Phase 0), then runs to completion — no
 | Skill | Focus | Install |
 |---|---|---|
 | [todo-resolution-ja](./todo-resolution-ja/SKILL.md) | 仕様書に溜まった TODO を2パスで解消 | `npx skills@latest add gkAgent/gk-skills/todo-resolution-ja` |
+
+### MCP Setup & Audit — 6 skills
+
+> Claude Code から外部サービスを直接操作するための MCP サーバー設定を自動化する。
+
+| Skill | Focus | Install |
+|---|---|---|
+| [mcp-setup-db](./mcp-setup-db/SKILL.md) | PostgreSQL / MySQL / SQLite の .mcp.json 生成・接続テスト | `npx skills@latest add gkAgent/gk-skills/mcp-setup-db` |
+| [mcp-setup-github](./mcp-setup-github/SKILL.md) | GitHub MCP — PAT取得・Issues/PR/Actions 操作例 | `npx skills@latest add gkAgent/gk-skills/mcp-setup-github` |
+| [mcp-setup-monitoring](./mcp-setup-monitoring/SKILL.md) | Datadog / Sentry MCP — ログ取得・アラート確認 | `npx skills@latest add gkAgent/gk-skills/mcp-setup-monitoring` |
+| [mcp-setup-cloudflare](./mcp-setup-cloudflare/SKILL.md) | Cloudflare Workers / D1 / R2 / KV MCP 設定 | `npx skills@latest add gkAgent/gk-skills/mcp-setup-cloudflare` |
+| [mcp-setup-communication](./mcp-setup-communication/SKILL.md) | Slack / LINE / Discord MCP — Bot設定・メッセージ送受信 | `npx skills@latest add gkAgent/gk-skills/mcp-setup-communication` |
+| [mcp-audit](./mcp-audit/SKILL.md) | .mcp.json / .claude.json のセキュリティ診断・レポート出力 | `npx skills@latest add gkAgent/gk-skills/mcp-audit` |
 
 ---
 
