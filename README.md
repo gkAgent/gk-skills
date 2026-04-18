@@ -15,7 +15,41 @@ These skills enforce 5 rules that fix all three — permanently.
 
 ## Skills
 
-### [spec-gen-enterprise-ja](./spec-gen-enterprise-ja/SKILL.md) — Spec Document Generation
+### Spec Generation (詳細仕様書)
+
+| Skill | Languages / Stack | Install |
+|---|---|---|
+| [spec-gen-enterprise-ja](./spec-gen-enterprise-ja/SKILL.md) | Java × Oracle/PG/MySQL/MSSQL + TypeScript + C# + VB.NET + COBOL | `npx skills@latest add gkAgent/gk-skills/spec-gen-enterprise-ja` |
+| [spec-gen-typescript-postgresql](./spec-gen-typescript-postgresql/SKILL.md) | TypeScript × PostgreSQL (Prisma/Drizzle/pg) | `npx skills@latest add gkAgent/gk-skills/spec-gen-typescript-postgresql` |
+| [spec-gen-typescript-mysql](./spec-gen-typescript-mysql/SKILL.md) | TypeScript × MySQL / PlanetScale | `npx skills@latest add gkAgent/gk-skills/spec-gen-typescript-mysql` |
+| [spec-gen-vbnet-sqlserver](./spec-gen-vbnet-sqlserver/SKILL.md) | VB.NET × SQL Server (WinForms/WebForms/WPF) | `npx skills@latest add gkAgent/gk-skills/spec-gen-vbnet-sqlserver` |
+| [spec-gen-csharp-sqlserver](./spec-gen-csharp-sqlserver/SKILL.md) | C# × SQL Server (ASP.NET Core/WinForms/WPF) | `npx skills@latest add gkAgent/gk-skills/spec-gen-csharp-sqlserver` |
+| [spec-gen-cobol-db2](./spec-gen-cobol-db2/SKILL.md) | COBOL × IBM DB2 (z/OS / LUW / CICS) | `npx skills@latest add gkAgent/gk-skills/spec-gen-cobol-db2` |
+
+### Code Review
+
+| Skill | Languages | Install |
+|---|---|---|
+| [code-review-enterprise-ja](./code-review-enterprise-ja/SKILL.md) | Java + TypeScript + C# + VB.NET + COBOL | `npx skills@latest add gkAgent/gk-skills/code-review-enterprise-ja` |
+| [code-review-typescript](./code-review-typescript/SKILL.md) | TypeScript / React / Next.js / NestJS | `npx skills@latest add gkAgent/gk-skills/code-review-typescript` |
+| [code-review-vbnet](./code-review-vbnet/SKILL.md) | VB.NET (WinForms/WebForms/WPF) | `npx skills@latest add gkAgent/gk-skills/code-review-vbnet` |
+| [code-review-cobol](./code-review-cobol/SKILL.md) | COBOL × DB2 / VSAM / CICS | `npx skills@latest add gkAgent/gk-skills/code-review-cobol` |
+
+### Migration
+
+| Skill | Migration Path | Install |
+|---|---|---|
+| [migration-vbnet-typescript](./migration-vbnet-typescript/SKILL.md) | VB.NET → TypeScript/React (5-phase) | `npx skills@latest add gkAgent/gk-skills/migration-vbnet-typescript` |
+
+### Productivity
+
+| Skill | Use When | Install |
+|---|---|---|
+| [todo-resolution-ja](./todo-resolution-ja/SKILL.md) | Spec docs have accumulated TODOs | `npx skills@latest add gkAgent/gk-skills/todo-resolution-ja` |
+
+---
+
+### [spec-gen-enterprise-ja](./spec-gen-enterprise-ja/SKILL.md) — All-in-One Spec Generation
 
 Generate 詳細仕様書 (design specs) from existing source code.
 
