@@ -22,10 +22,16 @@ These skills enforce 5 rules that fix all three — permanently.
 | [spec-gen-enterprise-ja](./spec-gen-enterprise-ja/SKILL.md) | Java × Oracle/PG/MySQL/MSSQL + TypeScript + C# + VB.NET + COBOL | `npx skills@latest add gkAgent/gk-skills/spec-gen-enterprise-ja` |
 | [spec-gen-java-oracle](./spec-gen-java-oracle/SKILL.md) | Java × Oracle (MyBatis/JPA/JDBC, ROWNUM/NUMBER精度) | `npx skills@latest add gkAgent/gk-skills/spec-gen-java-oracle` |
 | [spec-gen-java-postgresql](./spec-gen-java-postgresql/SKILL.md) | Java × PostgreSQL (Spring Data JPA/Hibernate, JSONB/UUID) | `npx skills@latest add gkAgent/gk-skills/spec-gen-java-postgresql` |
+| [spec-gen-java-mysql](./spec-gen-java-mysql/SKILL.md) | Java × MySQL (MyBatis/JPA, utf8mb4/TINYINT(1)/UPSERT) | `npx skills@latest add gkAgent/gk-skills/spec-gen-java-mysql` |
+| [spec-gen-java-sqlserver](./spec-gen-java-sqlserver/SKILL.md) | Java × SQL Server (MyBatis/JPA, MERGE/IDENTITY/Azure AD) | `npx skills@latest add gkAgent/gk-skills/spec-gen-java-sqlserver` |
 | [spec-gen-typescript-postgresql](./spec-gen-typescript-postgresql/SKILL.md) | TypeScript × PostgreSQL (Prisma/Drizzle/pg) | `npx skills@latest add gkAgent/gk-skills/spec-gen-typescript-postgresql` |
 | [spec-gen-typescript-mysql](./spec-gen-typescript-mysql/SKILL.md) | TypeScript × MySQL / PlanetScale | `npx skills@latest add gkAgent/gk-skills/spec-gen-typescript-mysql` |
-| [spec-gen-vbnet-sqlserver](./spec-gen-vbnet-sqlserver/SKILL.md) | VB.NET × SQL Server (WinForms/WebForms/WPF) | `npx skills@latest add gkAgent/gk-skills/spec-gen-vbnet-sqlserver` |
+| [spec-gen-typescript-sqlserver](./spec-gen-typescript-sqlserver/SKILL.md) | TypeScript × SQL Server (Prisma/mssql, MERGE/NVARCHAR/Azure SQL) | `npx skills@latest add gkAgent/gk-skills/spec-gen-typescript-sqlserver` |
 | [spec-gen-csharp-sqlserver](./spec-gen-csharp-sqlserver/SKILL.md) | C# × SQL Server (ASP.NET Core/WinForms/WPF) | `npx skills@latest add gkAgent/gk-skills/spec-gen-csharp-sqlserver` |
+| [spec-gen-csharp-oracle](./spec-gen-csharp-oracle/SKILL.md) | C# × Oracle (ODP.NET BindByName/NUMBER→decimal/ROWNUM) | `npx skills@latest add gkAgent/gk-skills/spec-gen-csharp-oracle` |
+| [spec-gen-csharp-postgresql](./spec-gen-csharp-postgresql/SKILL.md) | C# × PostgreSQL (EF Core Npgsql, JSONB/UUID/arrays) | `npx skills@latest add gkAgent/gk-skills/spec-gen-csharp-postgresql` |
+| [spec-gen-vbnet-sqlserver](./spec-gen-vbnet-sqlserver/SKILL.md) | VB.NET × SQL Server (WinForms/WebForms/WPF) | `npx skills@latest add gkAgent/gk-skills/spec-gen-vbnet-sqlserver` |
+| [spec-gen-vbnet-oracle](./spec-gen-vbnet-oracle/SKILL.md) | VB.NET × Oracle (ODP.NET/DataAdapter, レガシー仕様化) | `npx skills@latest add gkAgent/gk-skills/spec-gen-vbnet-oracle` |
 | [spec-gen-cobol-db2](./spec-gen-cobol-db2/SKILL.md) | COBOL × IBM DB2 (z/OS / LUW / CICS) | `npx skills@latest add gkAgent/gk-skills/spec-gen-cobol-db2` |
 
 ### Code Review
