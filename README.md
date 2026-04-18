@@ -20,6 +20,8 @@ These skills enforce 5 rules that fix all three — permanently.
 | Skill | Languages / Stack | Install |
 |---|---|---|
 | [spec-gen-enterprise-ja](./spec-gen-enterprise-ja/SKILL.md) | Java × Oracle/PG/MySQL/MSSQL + TypeScript + C# + VB.NET + COBOL | `npx skills@latest add gkAgent/gk-skills/spec-gen-enterprise-ja` |
+| [spec-gen-java-oracle](./spec-gen-java-oracle/SKILL.md) | Java × Oracle (MyBatis/JPA/JDBC, ROWNUM/NUMBER精度) | `npx skills@latest add gkAgent/gk-skills/spec-gen-java-oracle` |
+| [spec-gen-java-postgresql](./spec-gen-java-postgresql/SKILL.md) | Java × PostgreSQL (Spring Data JPA/Hibernate, JSONB/UUID) | `npx skills@latest add gkAgent/gk-skills/spec-gen-java-postgresql` |
 | [spec-gen-typescript-postgresql](./spec-gen-typescript-postgresql/SKILL.md) | TypeScript × PostgreSQL (Prisma/Drizzle/pg) | `npx skills@latest add gkAgent/gk-skills/spec-gen-typescript-postgresql` |
 | [spec-gen-typescript-mysql](./spec-gen-typescript-mysql/SKILL.md) | TypeScript × MySQL / PlanetScale | `npx skills@latest add gkAgent/gk-skills/spec-gen-typescript-mysql` |
 | [spec-gen-vbnet-sqlserver](./spec-gen-vbnet-sqlserver/SKILL.md) | VB.NET × SQL Server (WinForms/WebForms/WPF) | `npx skills@latest add gkAgent/gk-skills/spec-gen-vbnet-sqlserver` |
@@ -31,6 +33,8 @@ These skills enforce 5 rules that fix all three — permanently.
 | Skill | Languages | Install |
 |---|---|---|
 | [code-review-enterprise-ja](./code-review-enterprise-ja/SKILL.md) | Java + TypeScript + C# + VB.NET + COBOL | `npx skills@latest add gkAgent/gk-skills/code-review-enterprise-ja` |
+| [code-review-java](./code-review-java/SKILL.md) | Java (Spring Boot/MyBatis/JPA, @Transactional/N+1) | `npx skills@latest add gkAgent/gk-skills/code-review-java` |
+| [code-review-csharp](./code-review-csharp/SKILL.md) | C# (ASP.NET Core, async void/IDisposable/EF Core N+1) | `npx skills@latest add gkAgent/gk-skills/code-review-csharp` |
 | [code-review-typescript](./code-review-typescript/SKILL.md) | TypeScript / React / Next.js / NestJS | `npx skills@latest add gkAgent/gk-skills/code-review-typescript` |
 | [code-review-vbnet](./code-review-vbnet/SKILL.md) | VB.NET (WinForms/WebForms/WPF) | `npx skills@latest add gkAgent/gk-skills/code-review-vbnet` |
 | [code-review-cobol](./code-review-cobol/SKILL.md) | COBOL × DB2 / VSAM / CICS | `npx skills@latest add gkAgent/gk-skills/code-review-cobol` |
