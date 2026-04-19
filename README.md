@@ -1,6 +1,6 @@
 # gk-skills — Enterprise Claude Code Skills for Japanese SI Teams
 
-> **39 skills** covering the full Japanese SI project lifecycle.
+> **42 skills** covering the full Japanese SI project lifecycle.
 > Built from real projects: 300k-line VB.NET migrations, Oracle 19c systems, COBOL batch modernization.
 
 ---
@@ -52,7 +52,7 @@ Claude asks clarifying questions first (Phase 0), then runs to completion — no
 
 ---
 
-## Skills (33)
+## Skills (42)
 
 ### Spec Generation (詳細仕様書) — 14 skills
 
