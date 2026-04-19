@@ -51,6 +51,113 @@ Flag these for stakeholder decision:
 
 ---
 
+## Phase 1.5: Designer ファイル徹底分析（WinForms / WPF 案件必須）
+
+**`.designer.vb` / `.Designer.vb` を全ファイル分析する。省略禁止。**
+
+### コントロール抽出テーブル（フォームごとに作成）
+
+```
+## [FormName].designer.vb — コントロール一覧
+
+| コントロール名 | 型 | 主要プロパティ | バインドイベント |
+|---|---|---|---|
+| btnSave | Button | Text="保存", TabIndex=5, Anchor=Bottom,Right | Click→btnSave_Click |
+| txtUserName | TextBox | MaxLength=50, TabIndex=1, Enabled=True | TextChanged→ValidateInput |
+| dgvOrders | DataGridView | AutoSizeColumns=Fill, ReadOnly=False, MultiSelect=False | CellClick→dgvOrders_CellClick |
+| cmbStatus | ComboBox | DropDownStyle=DropDownList, TabIndex=3 | SelectedIndexChanged→FilterOrders |
+| pnlMain | Panel | Dock=Fill | — |
+```
+
+### 画面レイアウト記述
+
+```
+## [FormName] レイアウト概要
+
+- Formサイズ: [Width] x [Height] px
+- レイアウト構造:
+  TopPanel(ToolStrip) / MainPanel(SplitContainer: 左=TreeView, 右=DataGridView) / BottomPanel(StatusStrip)
+- タブ順序: txtUserId(1) → txtUserName(2) → cmbDept(3) → btnSearch(4) → btnSave(5)
+- 必須入力コントロール: [コントロール名リスト]
+- 読み取り専用コントロール: [コントロール名リスト]
+```
+
+### 画面スクリーンショット取得（推奨）
+
+元システムの画面イメージを以下のいずれかで保持する:
+
+```
+方法1（Visual Studio がある場合）:
+  - .sln を開いてフォームをデザイナーで表示 → Ctrl+PrintScreen → ペイント等で保存
+  - 保存先: docs/screens/[FormName].jpg
+
+方法2（ソースのみの場合）:
+  - designer.vb の Location/Size 情報から draw.io / Figma でワイヤーフレーム再現
+  - 精度は落ちるが「元画面の構造」が視覚化できれば十分
+
+方法3（Claude に描かせる）:
+  - designer.vb を貼り付けて「このコントロール配置をASCIIアートで表現してください」
+  - React への変換時の参照用として保持
+```
+
+### 画面責務の1行定義
+
+```
+| フォーム名 | 責務（1行） | コントロール数 | 複雑度 |
+|---|---|---|---|
+| FrmOrderEntry | 受注入力 — 顧客選択・商品追加・数量入力・合計計算・登録 | 24 | 高 |
+| FrmOrderList | 受注一覧 — 検索・絞り込み・CSV出力 | 12 | 中 |
+| FrmMasterMaint | マスタ保守 — 追加/編集/削除/並び替え | 18 | 中 |
+```
+
+**この表が後の PDCA スプリント設計の入力になる。**
+
+---
+
+## Phase 1.6: 分析結果 → 移行設計書
+
+**Phase 1 + 1.5 の結果を「移行設計書」にまとめる。これが以降の全実装の唯一の根拠となる。**
+
+```markdown
+## 移行設計書 — [システム名]
+
+### 1. 移行対象サマリ
+- フォーム数: N 画面
+- 移行困難項目: [COM Interop / On Error GoTo / etc.]
+- DB: [テーブル数・ストアドプロシージャ数]
+
+### 2. 画面ごとの移行設計
+
+#### [FrmOrderEntry] → OrderEntryPage.tsx
+
+**元画面の構造（Phase 1.5 より）:**
+- 顧客選択: cmbCustomer (ComboBox, SelectedIndexChanged → 顧客情報を自動入力)
+- 明細グリッド: dgvItems (DataGridView, CellEndEdit → 金額再計算)
+- 合計表示: lblTotal (Label, ReadOnly)
+- 登録ボタン: btnSave (Validation → DB INSERT)
+
+**移行後の設計:**
+- State: `{ customer, items[], total }` (useReducer推奨、複雑なため)
+- API: `POST /api/orders` (バックエンド実装)
+- バリデーション: 顧客必須・明細1件以上・数量>0
+- 元の `dgvItems.CellEndEdit` → `onChange` で都度合計再計算
+
+**スプリント見積もり:** Front 2日 / Server 1日 / Test 1日 = 計4日
+
+### 3. 移行順序（優先度順）
+1. [FrmLogin] — 認証基盤。他全画面の前提
+2. [FrmOrderEntry] — 最重要業務画面
+3. [FrmOrderList] — 参照系、依存少
+...
+
+### 4. 共通部品設計
+- ErrorBoundary / Toast通知 / ローディング状態
+- 認証コンテキスト (AuthContext)
+- DB接続 (Prisma Client singleton)
+```
+
+---
+
 ## Phase 2: Conversion Patterns — 変換パターン集
 
 ### 2.1 基本構文変換
@@ -180,35 +287,81 @@ const [currentUser, setCurrentUser] = useState<string>("");
 
 ---
 
-## Phase 3: Migration Task List — タスクリスト生成
+## Phase 3: Sprint Planning — PDCAサイクル設計
 
-Generate a structured migration task list:
+**Phase 1.6 の移行設計書を唯一の入力とする。分析を活かさないまま実装に入ることを禁止する。**
+
+### 3.0 事前共通タスク（Sprint 0 — 1回のみ）
 
 ```markdown
-## 移行タスクリスト
+## Sprint 0: 環境構築（全画面共通）
 
-### フェーズ A: 環境構築
 - [ ] TypeScript + React/Next.js プロジェクト初期化
-- [ ] DB クライアント (Prisma/Drizzle) セットアップ
-- [ ] 認証ライブラリ選定・設定
+- [ ] DB クライアント (Prisma/Drizzle) セットアップ・スキーマ定義
+- [ ] 認証ライブラリ選定・設定（AuthContext 実装）
+- [ ] 共通コンポーネント雛形（ErrorBoundary / Toast / Loading）
+- [ ] ルーティング設計（画面一覧から逆算）
+- [ ] CI/CD パイプライン（Vercel / GitHub Actions）
+```
 
-### フェーズ B: データ層移行
-- [ ] [テーブル名] のモデル定義 (Prismaスキーマ)
-- [ ] ストアドプロシージャの純粋SQL化 or 保持判断
-- [ ] DBマイグレーションスクリプト作成
+### 3.1 画面単位 PDCAサイクル（Sprint N ごとに繰り返す）
 
-### フェーズ C: ビジネスロジック移行
-- [ ] [機能名] ロジックの TypeScript 関数化
-- [ ] テスト（Jest）作成
+```markdown
+## Sprint N: [FrmXxx] → [XxxPage.tsx]
 
-### フェーズ D: UI移行
-- [ ] [画面名] の React コンポーネント作成
-- [ ] フォームバリデーション実装
-- [ ] エラー表示
+### 前提（Phase 1.6 より転記）
+- 元画面の責務: [1行定義]
+- 主要コントロール: [リスト]
+- State設計: [useStateまたはuseReducer]
+- API: [エンドポイント一覧]
+- バリデーション: [必須ルール]
 
-### フェーズ E: 結合・テスト
-- [ ] E2E テスト（Playwright/Cypress）
-- [ ] 旧システムとのデータ整合性確認
+### Step 1: 仕様書生成（Front設計）
+- [ ] Phase 1.5 のコントロール一覧 → Props / State 定義に変換
+- [ ] イベント一覧 → ハンドラ関数シグネチャ定義
+- [ ] 元画面の Anchor/Dock 設定 → CSSレイアウト方針決定（Flex/Grid）
+- [ ] バリデーションルール → Zodスキーマ定義
+- 成果物: `docs/specs/[XxxPage].spec.md`
+
+### Step 2: フロント実装
+- [ ] [XxxPage].tsx 作成（State + JSX + スタイル）
+- [ ] フォームバリデーション実装（react-hook-form + Zod）
+- [ ] ローディング / エラー表示
+- [ ] Storybook / ブラウザで元画面と目視比較
+- 完了条件: 元画面のタブ順・必須入力・レイアウトが再現されている
+
+### Step 3: サーバー実装
+- [ ] `/api/[resource]` Route Handler 実装
+- [ ] Prisma モデル / DBクエリ
+- [ ] 元ストアドプロシージャの TypeScript 化（または保持判断）
+- [ ] API 単体テスト（Jest + Supertest）
+
+### Step 4: 結合テスト
+- [ ] フロント ↔ サーバー E2E テスト（Playwright）
+- [ ] 旧システムと同じ入力 → 同じ出力の確認
+- [ ] エラーケース確認（必須未入力 / DB制約違反 / 通信エラー）
+- 完了条件: 旧システムとのデータ整合性が確認できている
+
+### 振り返り（次 Sprint への申し送り）
+- 想定外だったこと:
+- 次 Sprint に流用できるパターン:
+- 設計書に追記が必要な共通部品:
+```
+
+### 3.2 Sprint 順序（Phase 1.6 の移行順序に従う）
+
+```markdown
+## Sprint 計画一覧
+
+| Sprint | 画面 | 複雑度 | Front | Server | Test | 合計 |
+|--------|------|--------|-------|--------|------|------|
+| Sprint 0 | 環境構築 | — | — | — | — | 1週 |
+| Sprint 1 | [FrmLogin] | 低 | 1日 | 0.5日 | 0.5日 | 2日 |
+| Sprint 2 | [FrmXxx] | 中 | 2日 | 1日 | 1日 | 4日 |
+| Sprint N | [FrmYyy] | 高 | 3日 | 2日 | 1日 | 6日 |
+| — | 最終統合テスト | — | — | — | — | 3日 |
+
+**見積もりルール**: 画面数・複雑度が判明した時点で更新する。今の数字は仮置き。
 ```
 
 ---

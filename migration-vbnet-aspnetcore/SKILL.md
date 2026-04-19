@@ -48,6 +48,80 @@ Ask the user:
 
 ---
 
+## Phase 1.5: Designer / .aspx ファイル徹底分析（WinForms / WebForms 案件必須）
+
+**`.designer.vb` / `.Designer.vb`（WinForms）または `.aspx` + コードビハインド `.aspx.vb`（WebForms）を全ファイル分析する。省略禁止。**
+
+### コントロール抽出テーブル（画面ごとに作成）
+
+```
+## [FormName / PageName].designer.vb — コントロール一覧
+
+| コントロール名 | 型 | 主要プロパティ | バインドイベント |
+|---|---|---|---|
+| btnSave | Button | Text="保存", TabIndex=5 | Click→btnSave_Click |
+| txtUserName | TextBox | MaxLength=50, TabIndex=1 | TextChanged→ValidateInput |
+| GridView1 | GridView（WebForms） | AutoGenerateColumns=False | RowCommand→GridView1_RowCommand |
+| DropDownList1 | DropDownList | AutoPostBack=True | SelectedIndexChanged→FilterOrders |
+```
+
+### 画面責務の1行定義
+
+```
+| 画面名 | 責務（1行） | コントロール数 | 複雑度 | 移行先 |
+|---|---|---|---|---|
+| FrmOrderEntry | 受注入力 — 顧客選択・商品追加・登録 | 24 | 高 | Razor Pages / Blazor |
+| OrderList.aspx | 受注一覧 — 検索・絞り込み・CSV出力 | 12 | 中 | Razor Pages |
+| MasterMaint.aspx | マスタ保守 — 追加/編集/削除 | 18 | 中 | Razor Pages |
+```
+
+**この表が後のスプリント設計の入力になる。**
+
+---
+
+## Phase 1.6: 分析結果 → 移行設計書
+
+**Phase 1 + 1.5 の結果を「移行設計書」にまとめる。これが以降の全実装の唯一の根拠となる。**
+
+```markdown
+## 移行設計書 — [システム名]
+
+### 1. 移行対象サマリ
+- 画面数: N 画面（WinForms: X / WebForms: Y）
+- 移行困難項目: [WebForms イベントモデル / Module グローバル / DataSet複雑バインド等]
+- DB: [テーブル数・DataAdapter数・ストアドプロシージャ数]
+- 移行先UI選択: Razor Pages / Blazor Server（理由: チームスキル・スコープ）
+
+### 2. 画面ごとの移行設計
+
+#### [OrderList.aspx] → OrderList.cshtml (Razor Pages)
+
+**元画面の構造（Phase 1.5 より）:**
+- 検索フォーム: txtKeyword + btnSearch (PostBack → GridView再バインド)
+- 一覧: GridView1 (RowCommand → 編集/削除)
+- ページング: GridView.PageIndexChanging
+
+**移行後の設計:**
+- PageModel: `OnGetAsync(string? keyword)` で検索
+- ページング: `?page=N` クエリパラメータ + EF Core `.Skip().Take()`
+- 削除: `OnPostDeleteAsync(int id)` + PRG パターン
+
+**スプリント見積もり:** PageModel 1日 / EF Coreクエリ 0.5日 / テスト 0.5日 = 計2日
+
+### 3. 移行順序（優先度順）
+1. [Login.aspx / FrmLogin] — 認証基盤
+2. [最重要業務画面] — 業務価値最大
+3. 参照系画面 — 依存少
+
+### 4. 共通部品設計
+- TagHelper / ViewComponent 共通化
+- EF Core DbContext + Migration
+- DI サービス登録 (Program.cs)
+- `On Error GoTo` → `try/catch` 機械的変換完了後に移行開始
+```
+
+---
+
 ## Phase 2: Conversion Patterns
 
 ### 2.1 エラー処理
@@ -160,32 +234,75 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 ---
 
-## Phase 3: Migration Task List
+## Phase 3: Sprint Planning — PDCAサイクル設計
+
+**Phase 1.6 の移行設計書を唯一の入力とする。分析を活かさないまま実装に入ることを禁止する。**
+
+### 3.0 事前共通タスク（Sprint 0 — 1回のみ）
 
 ```markdown
-### フェーズ A: 環境・基盤
+## Sprint 0: 環境・基盤構築
+
 - [ ] ASP.NET Core プロジェクト作成（.NET 8）
-- [ ] EF Core セットアップ + 既存DBからscaffold
-- [ ] DI コンテナへ共通サービス登録
+- [ ] EF Core セットアップ + 既存DB scaffold（テーブル→モデル自動生成）
+- [ ] DI コンテナへ共通サービス登録（Program.cs）
+- [ ] 認証: Forms Authentication → Cookie認証 / ASP.NET Core Identity
+- [ ] `On Error GoTo` の全画面機械的変換（try/catch化）← 移行前の前提作業
 - [ ] ロギング設定（Serilog / Microsoft.Extensions.Logging）
+```
 
-### フェーズ B: データ・ビジネスロジック
-- [ ] DataSet/DataAdapter → EF Core クエリ変換
-- [ ] ストアドプロシージャ: EF Core `FromSqlRaw` or `ExecuteSqlRawAsync`
-- [ ] `On Error GoTo` → `try/catch` 機械的変換
+### 3.1 画面単位 PDCAサイクル（Sprint N ごとに繰り返す）
 
-### フェーズ C: Web層
-- [ ] [.aspx画面名] → Razor Pages PageModel
-- [ ] WebForms イベントハンドラ → PageModel メソッド
-- [ ] 認証: Forms Auth → Cookie認証 / Identity
+```markdown
+## Sprint N: [.aspx / FrmXxx] → [XxxModel.cshtml.cs / XxxPage.razor]
 
-### フェーズ D: UI
-- [ ] .aspx マークアップ → Razor (.cshtml) 変換
-- [ ] サーバーコントロール → Tag Helpers / Razor コンポーネント
+### 前提（Phase 1.6 より転記）
+- 元画面の責務: [1行定義]
+- 主要コントロール: [GridView / DropDownList / TextBox リスト]
+- PostBackイベント → PageModel メソッド対応表
+- EF Core クエリ設計: [DataAdapter/DataSet の置き換え]
 
-### フェーズ E: テスト
-- [ ] xUnit 単体テスト
-- [ ] Playwright / Selenium E2E
+### Step 1: 仕様書生成（PageModel 設計）
+- [ ] Phase 1.5 のコントロール一覧 → BindProperty / PageModel プロパティ定義
+- [ ] PostBackイベント → OnGet / OnPost / OnPostXxx メソッド定義
+- [ ] GridView RowCommand → BindProperty + OnPostDeleteAsync / OnPostEditAsync
+- [ ] バリデーション: DataAnnotations / FluentValidation 定義
+- 成果物: `docs/specs/[XxxPage].spec.md`
+
+### Step 2: PageModel / Blazor コンポーネント実装
+- [ ] `XxxModel.cshtml.cs` PageModel 実装
+- [ ] `.cshtml` Razor マークアップ（サーバーコントロール → Tag Helpers）
+- [ ] ブラウザで元画面と目視比較
+- 完了条件: PostBack相当の動作が Razor PageModel で再現されている
+
+### Step 3: データ層実装
+- [ ] EF Core クエリ実装（DataAdapter → DbContext クエリ）
+- [ ] ストアドプロシージャ: `FromSqlRaw` / `ExecuteSqlRawAsync` または PureSQL化
+- [ ] xUnit 単体テスト（サービス層）
+
+### Step 4: 結合テスト
+- [ ] Playwright / Selenium E2E テスト
+- [ ] 旧システムと同じ操作 → 同じデータ結果の確認
+- 完了条件: 旧システムとのデータ整合性が確認できている
+
+### 振り返り（次 Sprint への申し送り）
+- DataSet バインディングで詰まった箇所:
+- EF Core Include で追加が必要なリレーション:
+- 次 Sprint に流用できる TagHelper パターン:
+```
+
+### 3.2 Sprint 計画一覧
+
+```markdown
+| Sprint | 画面 | 複雑度 | PageModel | EF Core | Test | 合計 |
+|--------|------|--------|-----------|---------|------|------|
+| Sprint 0 | 環境構築 | — | — | — | — | 1週 |
+| Sprint 1 | [Login] | 低 | 0.5日 | 0.5日 | 0.5日 | 1.5日 |
+| Sprint 2 | [一覧系画面] | 中 | 1日 | 1日 | 1日 | 3日 |
+| Sprint N | [入力系画面] | 高 | 2日 | 1日 | 1日 | 4日 |
+| — | 最終統合テスト | — | — | — | — | 2日 |
+
+**見積もりルール**: 画面数が判明した時点で更新する。今の数字は仮置き。
 ```
 
 ---

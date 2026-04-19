@@ -195,33 +195,139 @@ cron.schedule("0 2 * * *", () => runDailyReport().catch(console.error));
 
 ---
 
-## Phase 3: Migration Task List
+## Phase 1.5: プログラム責務定義（アセスメント補完）
+
+**COBOL に Designer ファイルは存在しない。代わりに PGM 単位の責務と依存関係を完全に洗い出す。省略禁止。**
+
+### PGM 責務テーブル（全 PGM 分作成）
+
+```
+| PGM名 | DIVISION | 責務（1行） | 呼び出し先 CALL | COPY ブック | 複雑度 |
+|---|---|---|---|---|---|
+| DAILYRPT | PROCEDURE | 日次売上集計 → CSV出力 | CALCUTIL, FILEIO | EMPDEF, ORDDEF | 中 |
+| CALCUTIL | PROCEDURE | 金額計算ユーティリティ（COMP-3） | — | AMTDEF | 低 |
+| CICSORD | CICS | 受注照会オンライン処理 | CALCUTIL | ORDDEF | 高 |
+```
+
+### JCL ジョブ依存テーブル
+
+```
+| ジョブ名 | ステップ順 | PGM | 入力データセット | 出力先 | 実行頻度 |
+|---|---|---|---|---|---|
+| JOBBATCH | STEP1→STEP2→STEP3 | DAILYRPT→CALCUTIL→RPTOUT | PROD.INPUT.FILE | PROD.REPORT | 毎日 02:00 |
+```
+
+---
+
+## Phase 1.6: 分析結果 → 移行設計書
+
+**Phase 1 + 1.5 の結果を「移行設計書」にまとめる。これが以降の全実装の唯一の根拠となる。**
 
 ```markdown
-### フェーズ A: データ層
-- [ ] COPY ブック → TypeScript 型定義マッピング表
-- [ ] DB2 → PostgreSQL スキーマ移行（pgloader / ora2pg相当）
-- [ ] COMP-3 / 固定小数点 → decimal.js 変換ユーティリティ作成
+## 移行設計書 — [システム名]
 
-### フェーズ B: ビジネスロジック
-- [ ] [PGM名] バッチロジック → Node.js 関数変換
-- [ ] EXEC SQL → Prisma/pg クエリ変換
-- [ ] CALL 外部プログラム → TypeScript モジュール化
+### 1. 移行対象サマリ
+- PGM 数: N 本（バッチ: X / CICS: Y）
+- JCL ジョブ数: Z
+- COPY ブック数: N（共有型定義の洗い出し完了）
+- 移行困難項目: [REDEFINES複雑 / IMS / MQ Series / UTL_FILE 等]
+- **COMP-3使用箇所**: 全PGMのCOMP-3フィールドを列挙（精度損失リスク）
 
-### フェーズ C: 実行基盤
-- [ ] JCL ジョブ → node-cron / BullMQ スケジューラ
+### 2. PGMごとの移行設計
+
+#### [DAILYRPT] → jobs/daily-report.ts
+
+**元PGMの構造（Phase 1.5 より）:**
+- WORKING-STORAGE: WS-AMOUNT PIC 9(9)V99 COMP-3
+- PERFORM UNTIL EOF-FLAG: 入力ファイル1行ずつ処理
+- CALL 'CALCUTIL': 金額計算
+- EXEC SQL INSERT: 集計結果をDB書き込み
+
+**移行後の設計:**
+- `Decimal` 型 (decimal.js): WS-AMOUNT の精度保証
+- Node.js readline ストリーム: PERFORM UNTIL EOF 対応
+- `calcUtil()` モジュール: CALCUTIL CALLの TypeScript 化
+- Prisma INSERT: EXEC SQL の置き換え
+
+**スプリント見積もり:** 型変換 0.5日 / バッチロジック 1日 / テスト 1日 = 計2.5日
+
+### 3. 移行順序
+1. COPY ブック → TypeScript 型定義（全PGMの前提）
+2. COMP-3 変換ユーティリティ（全PGMの前提）
+3. ユーティリティPGM（依存される側から先に）
+4. バッチPGM（JCL実行順に従う）
+5. CICS（最後）
+```
+
+---
+
+## Phase 3: Sprint Planning — PDCAサイクル設計
+
+**Phase 1.6 の移行設計書を唯一の入力とする。分析を活かさないまま実装に入ることを禁止する。**
+
+### 3.0 事前共通タスク（Sprint 0 — 1回のみ）
+
+```markdown
+## Sprint 0: 基盤構築
+
+- [ ] TypeScript + Node.js プロジェクト初期化
+- [ ] COMP-3 変換ユーティリティ作成（decimal.js ベース）+ 単体テスト（精度検証）
+- [ ] COPY ブック → TypeScript 型定義ファイル生成（`types/cobol.d.ts`）
+- [ ] DB2 → PostgreSQL スキーマ移行（pgloader）
+- [ ] EBCDIC → UTF-8 変換レイヤー（iconv-lite）
+- [ ] CI/CD（GitHub Actions + Jest）
+```
+
+### 3.1 PGM 単位 PDCAサイクル（Sprint N ごとに繰り返す）
+
+```markdown
+## Sprint N: [PGM名] → [jobs/xxx.ts / modules/xxx.ts]
+
+### 前提（Phase 1.6 より転記）
+- 元PGMの責務: [1行定義]
+- WORKING-STORAGE: [主要変数・COMP-3フィールド一覧]
+- PERFORM 構造: [主要処理フロー]
+- EXEC SQL: [使用クエリ一覧]
+- CALL 先: [呼び出しモジュール]
+
+### Step 1: 仕様書生成（TypeScript設計）
+- [ ] WORKING-STORAGE → TypeScript 変数定義（COMP-3は全て Decimal 型）
+- [ ] PERFORM UNTIL → async ループ設計
+- [ ] EXEC SQL → Prisma / pg クエリ設計
+- [ ] CALL → TypeScript モジュール import 設計
+- 成果物: `docs/specs/[pgm-name].spec.md`
+
+### Step 2: TypeScript 実装
+- [ ] 型定義 + ビジネスロジック実装
+- [ ] COMP-3 計算箇所は全て decimal.js で実装
 - [ ] エラー処理: SQLCODE チェック → try/catch + ロールバック
-- [ ] ファイル I/O: VSAM → PostgreSQL / S3 移行判断
 
-### フェーズ D: CICS（該当時）
-- [ ] BMS マップ → React/HTML フォーム再設計
-- [ ] EXEC CICS LINK → REST API 呼び出し
-- [ ] トランザクション境界 → DB トランザクション
+### Step 3: テスト（精度検証が最重要）
+- [ ] Jest 単体テスト（計算ロジック）
+- [ ] COMP-3 精度テスト: 同じ入力で COBOL と TypeScript の出力が一致するか
 
-### フェーズ E: テスト・並行稼働
-- [ ] Jest 単体テスト（計算ロジック精度検証）
-- [ ] 本番 COBOL と Node.js の出力比較（並行稼働期間）
-- [ ] 金融計算の精度検証（小数点以下 N 桁の一致確認）
+### Step 4: 並行稼働テスト
+- [ ] 本番 COBOL と Node.js に同じ入力を与えて出力比較
+- 完了条件: 全出力が**ビット単位**で一致（金融計算の場合は特に）
+
+### 振り返り
+- COMP-3 変換で発生した精度差異:
+- REDEFINES の解釈で詰まった箇所:
+- 次 Sprint に流用できる変換パターン:
+```
+
+### 3.2 Sprint 計画一覧
+
+```markdown
+| Sprint | 対象 | 複雑度 | 実装 | テスト | 並行稼働 | 合計 |
+|--------|------|--------|------|--------|---------|------|
+| Sprint 0 | 基盤構築 | — | — | — | — | 1週 |
+| Sprint 1 | COPY ブック型変換 | 低 | 1日 | 1日 | — | 2日 |
+| Sprint 2 | [ユーティリティPGM] | 低 | 1日 | 1日 | 0.5日 | 2.5日 |
+| Sprint N | [バッチPGM] | 中〜高 | 2日 | 2日 | 1日 | 5日 |
+| Sprint X | [CICS PGM] | 高 | 3日 | 2日 | 1日 | 6日 |
+
+**見積もりルール**: PGM数・行数が判明した時点で更新する。今の数字は仮置き。
 ```
 
 ---

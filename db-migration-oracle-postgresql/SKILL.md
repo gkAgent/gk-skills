@@ -220,34 +220,106 @@ $$;
 
 ---
 
-## Phase 5: 移行タスクリスト
+## Phase 4.5: オブジェクト責務定義（アセスメント補完）
+
+**移行前に全DBオブジェクトの責務と依存を洗い出す。スキーマ変換ツールに任せきりにしない。**
+
+### ストアドプロシージャ責務テーブル
+
+```
+| プロシージャ名 | 責務（1行） | 呼び出し元 | 使用Oracle固有機能 | 移行先 | 複雑度 |
+|---|---|---|---|---|---|
+| sp_update_salary | 社員給与更新 | Javaアプリ | — | PL/pgSQL | 低 |
+| sp_get_dept_tree | 部門階層取得 | Javaアプリ | CONNECT BY | PL/pgSQL + WITH RECURSIVE | 高 |
+| pkg_report.gen_monthly | 月次レポート生成 | バッチJCL | UTL_FILE, DBMS_OUTPUT | アプリ層へ移管 | 高 |
+```
+
+### 移行設計書
 
 ```markdown
-### フェーズ A: 事前調査
-- [ ] Oracle 依存機能の洗い出し（CONNECT BY / MERGE / パーティション）
-- [ ] PL/SQL プロシージャ数・行数カウント
-- [ ] アプリ側 SQL の `${}` 文字列連結調査（SQLi + 方言依存）
+## DB移行設計書 — [システム名]
 
-### フェーズ B: スキーマ移行
-- [ ] ora2pg によるDDL変換（テーブル/インデックス/シーケンス）
-- [ ] DATE → TIMESTAMP 変換の影響範囲確認
-- [ ] CLOB/BLOB → TEXT/BYTEA 移行判断
+### 1. 移行対象サマリ
+- テーブル数: N（うち CLOB/BLOB含む: X件）
+- ストアドプロシージャ数: N（うち移行困難: X件）
+- View数: N / トリガー数: N
+- **DATE型使用箇所**: 全テーブルで DATE列を洗い出し（時刻部分影響範囲）
 
-### フェーズ C: SQL 変換（アプリ側）
-- [ ] ROWNUM → LIMIT/OFFSET 置換
-- [ ] SYSDATE → NOW() / CURRENT_TIMESTAMP 置換
-- [ ] NVL → COALESCE、DECODE → CASE WHEN 置換
-- [ ] CONNECT BY → WITH RECURSIVE 変換（要個別対応）
+### 2. スプリント対象の優先順位
+1. スキーマ基盤（テーブル/インデックス/シーケンス）— 全体の前提
+2. 単純 PL/SQL プロシージャ（Oracle固有機能なし）
+3. CONNECT BY 使用プロシージャ（WITH RECURSIVE 書き換え）
+4. UTL_FILE / DBMS_SCHEDULER 使用箇所（アプリ層移管）
+5. トリガー（PostgreSQL トリガーへの変換 or アプリ層移管の判断）
+```
 
-### フェーズ D: PL/SQL 移行
-- [ ] 単純プロシージャ → PL/pgSQL 変換
-- [ ] UTL_FILE 使用箇所 → アプリ層へ移管
-- [ ] DBMS_SCHEDULER → pg_cron または cron ジョブ
+---
 
-### フェーズ E: 検証
-- [ ] ora2pg データ移行後の件数照合
-- [ ] SQL 実行結果の Oracle vs PostgreSQL 比較テスト
-- [ ] DATE 型の時刻部分の扱い検証
+## Phase 5: Sprint Planning — PDCAサイクル設計
+
+**Phase 4.5 の移行設計書を唯一の入力とする。ora2pg の自動変換結果をそのまま本番投入することを禁止する。**
+
+### 5.0 事前共通タスク（Sprint 0 — 1回のみ）
+
+```markdown
+## Sprint 0: スキーマ基盤移行
+
+- [ ] ora2pg インストール・設定
+- [ ] DDL変換: テーブル/インデックス/シーケンス → PostgreSQL DDL
+- [ ] DATE → TIMESTAMP 変換の全テーブル影響範囲確認
+- [ ] NUMBER → NUMERIC(p,s) / BIGINT の型マッピング確定
+- [ ] PostgreSQL ターゲット環境構築（RDS Aurora / オンプレ）
+- [ ] ora2pg データ移行後の全テーブル件数照合
+```
+
+### 5.1 ストアドプロシージャ単位 PDCAサイクル（Sprint N ごとに繰り返す）
+
+```markdown
+## Sprint N: [sp_xxx / pkg_xxx.procedure] → PL/pgSQL or アプリ層
+
+### 前提（Phase 4.5 より転記）
+- 責務: [1行定義]
+- 使用Oracle固有機能: [CONNECT BY / UTL_FILE / DBMS_SCHEDULER / 等]
+- 呼び出し元: [Javaアプリ / バッチ / 他プロシージャ]
+- 移行先判断: PL/pgSQL 変換 / アプリ層移管 / pg_cron
+
+### Step 1: 変換設計
+- [ ] Oracle固有構文の PostgreSQL 対応構文を特定（Phase 2/3 変換表参照）
+- [ ] `COMMIT` → 呼び出し側での transaction 管理に変更
+- [ ] RAISE_APPLICATION_ERROR → RAISE EXCEPTION に変換
+
+### Step 2: PL/pgSQL 実装（or アプリ層実装）
+- [ ] PL/pgSQL 変換 or TypeScript/Java へのロジック移管
+- [ ] `EXECUTE IMMEDIATE` → `EXECUTE ... USING`
+- [ ] UTL_FILE → アプリ層ファイルI/O
+
+### Step 3: 単体テスト
+- [ ] 同じ引数で Oracle と PostgreSQL の戻り値/副作用が一致するか確認
+- [ ] エラーケース: NO_DATA_FOUND → NOT FOUND の挙動確認
+
+### Step 4: アプリ統合テスト
+- [ ] 呼び出し元アプリで CALL → 結果が旧システムと一致するか確認
+- [ ] DATE 型の時刻部分: アプリ側の比較ロジックへの影響確認
+- 完了条件: Oracle と PostgreSQL で同一入力→同一出力が確認できている
+
+### 振り返り
+- Oracle固有構文で詰まった変換:
+- アプリ層移管を選んだ理由:
+- 次 Sprint に流用できる変換パターン:
+```
+
+### 5.2 Sprint 計画一覧
+
+```markdown
+| Sprint | 対象 | 複雑度 | 変換 | テスト | 合計 |
+|--------|------|--------|------|--------|------|
+| Sprint 0 | スキーマ基盤 | — | — | — | 1週 |
+| Sprint 1 | 単純PL/SQL | 低 | 0.5日 | 0.5日 | 1日 |
+| Sprint N | CONNECT BY含む | 高 | 2日 | 1日 | 3日 |
+| Sprint X | UTL_FILE/アプリ移管 | 高 | 2日 | 2日 | 4日 |
+| — | 最終全件照合 | — | — | — | 2日 |
+
+**見積もりルール**: プロシージャ数・Oracle固有機能の数が判明した時点で更新する。今の数字は仮置き。
 ```
 
 ---

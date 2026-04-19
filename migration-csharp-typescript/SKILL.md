@@ -46,6 +46,98 @@ Ask the user:
 
 ---
 
+## Phase 1.5: Designer ファイル徹底分析（WinForms / WPF 案件必須）
+
+**`.Designer.cs` / `.designer.cs` を全ファイル分析する。省略禁止。**
+
+### コントロール抽出テーブル（フォームごとに作成）
+
+```
+## [FormName].Designer.cs — コントロール一覧
+
+| コントロール名 | 型 | 主要プロパティ | バインドイベント |
+|---|---|---|---|
+| btnSave | Button | Text="保存", TabIndex=5, Anchor=Bottom,Right | Click→btnSave_Click |
+| txtUserName | TextBox | MaxLength=50, TabIndex=1, Enabled=true | TextChanged→ValidateInput |
+| dgvOrders | DataGridView | AutoSizeColumnsMode=Fill, ReadOnly=false, MultiSelect=false | CellClick→dgvOrders_CellClick |
+| cmbStatus | ComboBox | DropDownStyle=DropDownList, TabIndex=3 | SelectedIndexChanged→FilterOrders |
+| pnlMain | Panel | Dock=Fill | — |
+```
+
+### 画面レイアウト記述
+
+```
+## [FormName] レイアウト概要
+
+- Formサイズ: [Width] x [Height] px
+- レイアウト構造:
+  TopPanel(ToolStrip) / MainPanel(SplitContainer: 左=TreeView, 右=DataGridView) / BottomPanel(StatusStrip)
+- タブ順序: txtUserId(1) → txtUserName(2) → cmbDept(3) → btnSearch(4) → btnSave(5)
+- 必須入力コントロール: [コントロール名リスト]
+- 読み取り専用コントロール: [コントロール名リスト]
+```
+
+### 画面責務の1行定義
+
+```
+| フォーム名 | 責務（1行） | コントロール数 | 複雑度 |
+|---|---|---|---|
+| FrmOrderEntry | 受注入力 — 顧客選択・商品追加・数量入力・合計計算・登録 | 24 | 高 |
+| FrmOrderList | 受注一覧 — 検索・絞り込み・CSV出力 | 12 | 中 |
+| FrmMasterMaint | マスタ保守 — 追加/編集/削除/並び替え | 18 | 中 |
+```
+
+> **ASP.NET Core MVC / Web API 案件**: Designer ファイルは存在しない。
+> 代わりに コントローラ + View (.cshtml) を同等分析する。
+> コントローラ責務1行定義表（フォーム一覧と同じ構造）を作成すること。
+
+---
+
+## Phase 1.6: 分析結果 → 移行設計書
+
+**Phase 1 + 1.5 の結果を「移行設計書」にまとめる。これが以降の全実装の唯一の根拠となる。**
+
+```markdown
+## 移行設計書 — [システム名]
+
+### 1. 移行対象サマリ
+- 画面/コントローラ数: N 件
+- 移行困難項目: [COM Interop / SignalR / P/Invoke / etc.]
+- DB: [テーブル数・EF Core モデル数・ストアドプロシージャ数]
+
+### 2. 画面/コントローラごとの移行設計
+
+#### [FrmOrderEntry / OrdersController] → OrderEntryPage.tsx
+
+**元画面の構造（Phase 1.5 より）:**
+- 顧客選択: cmbCustomer (ComboBox / SelectList, SelectedIndexChanged → 顧客情報自動入力)
+- 明細グリッド: dgvItems (DataGridView / HTML Table, CellEndEdit → 金額再計算)
+- 合計表示: lblTotal (Label / ViewData, ReadOnly)
+- 登録ボタン: btnSave / [HttpPost] (バリデーション → DB INSERT)
+
+**移行後の設計:**
+- State: `{ customer, items[], total }` (useReducer推奨、複雑なため)
+- API: `POST /api/orders` (バックエンド実装)
+- バリデーション: 顧客必須・明細1件以上・数量>0
+- EF Core Include クエリ → Prisma include に対応
+
+**スプリント見積もり:** Front 2日 / Server 1日 / Test 1日 = 計4日
+
+### 3. 移行順序（優先度順）
+1. [LoginController / FrmLogin] — 認証基盤
+2. [OrdersController / FrmOrderEntry] — 最重要業務画面
+3. [OrdersController GET / FrmOrderList] — 参照系
+...
+
+### 4. 共通部品設計
+- ErrorBoundary / Toast通知 / ローディング状態
+- 認証コンテキスト (NextAuth / Clerk)
+- DB接続 (Prisma Client singleton)
+- LINQ クエリ → Prisma クエリ対応表
+```
+
+---
+
 ## Phase 2: Conversion Patterns
 
 ### 2.1 型・変数
@@ -193,30 +285,80 @@ export class UserModule {}
 
 ---
 
-## Phase 3: Migration Task List
+## Phase 3: Sprint Planning — PDCAサイクル設計
+
+**Phase 1.6 の移行設計書を唯一の入力とする。分析を活かさないまま実装に入ることを禁止する。**
+
+### 3.0 事前共通タスク（Sprint 0 — 1回のみ）
 
 ```markdown
-### フェーズ A: 環境構築
+## Sprint 0: 環境構築（全画面共通）
+
 - [ ] TypeScript + Next.js / NestJS プロジェクト初期化
-- [ ] Prisma セットアップ + schema.prisma 定義
-- [ ] 認証ライブラリ選定（NextAuth / Clerk）
+- [ ] Prisma セットアップ + EF Core モデルから schema.prisma 変換
+- [ ] 認証ライブラリ選定（NextAuth / Clerk）+ AuthContext 実装
+- [ ] 共通コンポーネント雛形（ErrorBoundary / Toast / Loading）
+- [ ] SQL Server → PostgreSQL マイグレーション判断（任意）
+- [ ] CI/CD パイプライン（Vercel / GitHub Actions）
+```
 
-### フェーズ B: データ層
-- [ ] EF Core モデル → Prisma schema 変換
-- [ ] SQL Server → PostgreSQL マイグレーション（任意）
-- [ ] ストアドプロシージャの純粋SQL化 or 保持判断
+### 3.1 画面/コントローラ単位 PDCAサイクル（Sprint N ごとに繰り返す）
 
-### フェーズ C: API 層
-- [ ] [コントローラ名] → Next.js API Route / NestJS Controller 変換
-- [ ] 認可ロジック（[Authorize] → middleware）
+```markdown
+## Sprint N: [FrmXxx / XxxController] → [XxxPage.tsx / /api/xxx]
 
-### フェーズ D: UI 層（WinForms/WPF の場合）
-- [ ] [フォーム名] → React コンポーネント設計
-- [ ] フォームバリデーション（react-hook-form / zod）
+### 前提（Phase 1.6 より転記）
+- 元画面/コントローラの責務: [1行定義]
+- 主要コントロール/アクション: [リスト]
+- State設計: [useState / useReducer]
+- API: [エンドポイント一覧]
+- EF Core クエリ → Prisma 対応: [対応表]
 
-### フェーズ E: テスト・結合
-- [ ] Jest 単体テスト
-- [ ] Playwright E2E
+### Step 1: 仕様書生成（Front設計）
+- [ ] Phase 1.5 のコントロール一覧 → Props / State 定義に変換
+- [ ] イベントハンドラ / Action → React ハンドラシグネチャ定義
+- [ ] LINQ クエリ → TypeScript 配列メソッド対応表
+- [ ] バリデーションルール → Zodスキーマ定義
+- 成果物: `docs/specs/[XxxPage].spec.md`
+
+### Step 2: フロント実装
+- [ ] [XxxPage].tsx 作成（State + JSX + スタイル）
+- [ ] フォームバリデーション（react-hook-form + Zod）
+- [ ] ローディング / エラー表示
+- [ ] ブラウザで元画面と目視比較（WinForms案件）
+- 完了条件: 元画面のタブ順・必須入力・レイアウトが再現されている
+
+### Step 3: サーバー実装
+- [ ] `/api/[resource]` Route Handler / NestJS Controller 実装
+- [ ] Prisma クエリ（EF Core `Include` → Prisma `include` 対応）
+- [ ] `[Authorize]` → NextAuth session check / JWT middleware
+- [ ] ストアドプロシージャの TypeScript 化（または保持判断）
+- [ ] API 単体テスト（Jest + Supertest）
+
+### Step 4: 結合テスト
+- [ ] フロント ↔ サーバー E2E テスト（Playwright）
+- [ ] 旧システムと同じ入力 → 同じ出力の確認
+- [ ] SignalR 代替（Socket.IO）がある場合は接続テスト
+- 完了条件: 旧システムとのデータ整合性が確認できている
+
+### 振り返り（次 Sprint への申し送り）
+- 想定外だったこと:
+- LINQ → TS 変換で再利用できるパターン:
+- Prisma スキーマに追記が必要な内容:
+```
+
+### 3.2 Sprint 計画一覧
+
+```markdown
+| Sprint | 画面/コントローラ | 複雑度 | Front | Server | Test | 合計 |
+|--------|------------------|--------|-------|--------|------|------|
+| Sprint 0 | 環境構築 | — | — | — | — | 1週 |
+| Sprint 1 | [Login] | 低 | 1日 | 0.5日 | 0.5日 | 2日 |
+| Sprint 2 | [XxxController] | 中 | 2日 | 1日 | 1日 | 4日 |
+| Sprint N | [YyyForm] | 高 | 3日 | 2日 | 1日 | 6日 |
+| — | 最終統合テスト | — | — | — | — | 3日 |
+
+**見積もりルール**: 画面数・コントローラ数が判明した時点で更新する。今の数字は仮置き。
 ```
 
 ---
