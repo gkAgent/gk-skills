@@ -22,6 +22,18 @@ Ask the user:
 
 If the user has already provided this context, skip to Phase 1.
 
+> 粒度と実行モードを選んでください。
+>
+> **Granularity（粒度）**:
+> - `Project` — VB.NET/C# WinForms/WebForms 推奨（プロジェクト全体を1ファイルに）
+> - `Feature` — Spring Boot / ASP.NET Core など機能単位が自然なシステム向け
+> - `Form` — フォーム単位の細粒度（UI変更詳細が必要な時）
+> - `Module` — バッチ、サービス層など中粒度
+>
+> **ExecutionMode**:
+> - `Review` — 1仕様書ずつ生成→確認→次へ（品質重視・初回利用向け）
+> - `Batch` — 途中確認なしで全対象を一気に完了まで実行（100PJ一晩処理向け）
+
 ---
 
 ## Phase 1: Question-Driven Setup (D1)
@@ -57,7 +69,8 @@ Ask in three stages. Wait for answers before proceeding.
 - DB アクセス方式（EXEC SQL / VSAM / DB2 / IMS）
 
 ### Stage 3 — Output preferences
-- 粒度：画面単位 / 機能単位 / バッチ単位 / API単位 / DB単位
+- 粒度：`Project` / `Feature` / `Form` / `Module`（Phase 0で決定済みの場合はスキップ）
+- 実行モード：`Review`（確認しながら）/ `Batch`（一気に最後まで）
 - 出力形式：Markdown / 既定テンプレートに沿って
 - 優先度が高い機能はありますか？
 
@@ -83,6 +96,9 @@ Rules:
 - Do NOT choose which ones to process based on your own judgment
 - After each item, update the status to `[x] 完了` or `[△] TODO あり`
 - Never stop processing mid-list unless the user explicitly says so
+
+**Batch モードの場合**: 踏破計画を表示後、確認を待たずに全項目を順次処理する。処理完了後にサマリーを出力する。
+**Review モードの場合**: 各項目完了ごとに確認を求める（デフォルト）。
 
 ---
 
@@ -124,6 +140,29 @@ For each item in the coverage plan, generate a spec following this structure:
 ## 7. TODO / 要確認事項
 [根拠不足の事項をすべてここに列挙。空にしてはいけない場合は正直にリストアップ]
 ```
+
+### 出力ファイル命名規則
+
+| Granularity | ファイル名 |
+|---|---|
+| Project | `spec_<projectname>.md` |
+| Feature | `spec_<featurename>.md` |
+| Form | `spec_<projectname>_<formname>.md` |
+| Module | `spec_<modulename>.md` |
+
+---
+
+## Phase 4: TODO Resolution（2パス目）
+
+After generating specs, if any `TODO` items remain:
+
+> 仕様書内に TODO が残っています。`todo-resolution-ja` スキルで一括解消できます。
+>
+> 「todo解消」と入力すると Phase 2（2パス）を開始します。
+
+**Batch モードの場合**: 全仕様書生成完了後に自動的に TODO 一覧を集計して提示する。
+
+**Review モードの場合**: 各仕様書生成後に TODO があれば即時提示する。
 
 ---
 
