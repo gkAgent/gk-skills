@@ -201,3 +201,132 @@ Mockより信頼性が高く、本番障害を防ぐ。
 - **境界値の抜け禁止** — 下限-1, 下限, 下限+1 / 上限-1, 上限, 上限+1 を必ず含める
 - **ハッピーパスのみ禁止** — 異常系・境界値を必ずセットで生成
 - **途中停止禁止** / **AI voice禁止**
+
+---
+
+## Phase E: E2E Test Generation (Playwright)
+
+This phase activates when the user says "Playwright" or "E2E" or "結合テスト自動化".
+
+### Phase E-0: Scope
+
+Ask the user:
+
+> Playwrightテストの対象を教えてください。
+>
+> **対象URL**: ローカル開発サーバ / ステージング / 本番
+> **テスト種別**:
+> - `smoke` — 主要ページの表示確認（リンク切れ・404チェック）
+> - `form` — フォーム入力・バリデーション・送信フロー
+> - `auth` — ログイン・ログアウト・権限チェック
+> - `regression` — 既存機能の回帰テスト
+> **言語**: TypeScript（推奨）/ JavaScript
+> **フレームワーク**: Next.js / React / 静的HTML / その他
+
+### Phase E-1: Test Plan
+
+Generate a test plan table:
+
+```markdown
+## E2Eテスト計画
+
+| # | テストID | 対象画面/機能 | テスト種別 | 前提条件 | 期待結果 | 優先度 |
+|---|---------|------------|---------|--------|--------|------|
+| 1 | E2E-001 | トップページ表示 | smoke | なし | HTTP 200、主要要素表示 | P1 |
+| 2 | E2E-002 | ナビゲーションリンク | smoke | なし | 全リンクが正常遷移 | P1 |
+```
+
+### Phase E-2: playwright.config.ts Generation
+
+Generate a `playwright.config.ts` tailored to the project:
+
+```typescript
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests/e2e',
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: 'html',
+  use: {
+    baseURL: process.env.BASE_URL || 'http://localhost:3000',
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+  },
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    { name: 'mobile', use: { ...devices['iPhone 13'] } },
+  ],
+});
+```
+
+### Phase E-3: Test Code Generation
+
+For each item in the test plan, generate a Playwright test file:
+
+```typescript
+// tests/e2e/smoke.spec.ts
+import { test, expect } from '@playwright/test';
+
+test.describe('スモークテスト', () => {
+  test('トップページが表示される', async ({ page }) => {
+    await page.goto('/');
+    await expect(page).toHaveTitle(/AI Agent/);
+    await expect(page.locator('nav')).toBeVisible();
+  });
+
+  test('ナビゲーションリンクが正常遷移する', async ({ page }) => {
+    await page.goto('/');
+    const links = page.locator('nav a');
+    const count = await links.count();
+    for (let i = 0; i < count; i++) {
+      const href = await links.nth(i).getAttribute('href');
+      if (href && !href.startsWith('http') && !href.startsWith('#')) {
+        const response = await page.goto(href);
+        expect(response?.status()).toBeLessThan(400);
+        await page.goBack();
+      }
+    }
+  });
+});
+```
+
+### Phase E-4: CI Integration
+
+Generate a GitHub Actions workflow for Playwright:
+
+```yaml
+# .github/workflows/playwright.yml
+name: Playwright E2E Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+```
+
+### Forbidden (E2E固有)
+
+- **実URL直打ち禁止**: `baseURL` を使い、ハードコードしない
+- **sleep禁止**: `waitForSelector` / `waitForResponse` を使う
+- **XPath禁止**: `getByRole` / `getByText` / `locator('[data-testid]')` を優先
+- **テスト間依存禁止**: 各テストは独立して実行できること
