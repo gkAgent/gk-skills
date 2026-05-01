@@ -1,0 +1,352 @@
+[CHECK] D:/aiworker/products/gk-skills/api-spec-openapi/PROMPT.md
+  L282: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L283: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L285: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L292: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L296: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/api-spec-openapi/SKILL.md
+  L280: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L281: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L283: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L294: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/code-review-cobol/PROMPT.md
+  L82: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L85: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/code-review-cobol/SKILL.md
+  L82: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/code-review-csharp/PROMPT.md
+  L129: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/code-review-enterprise/PROMPT.md
+  L145: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/code-review-enterprise-ja/PROMPT.md
+  L153: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/code-review-enterprise-ja/SKILL.md
+  L159: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/code-review-java/PROMPT.md
+  L116: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/code-review-typescript/PROMPT.md
+  L87: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/code-review-vbnet/PROMPT.md
+  L103: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L105: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/code-review-vbnet/SKILL.md
+  L110: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/db-migration-oracle-postgresql/PROMPT.md
+  L161: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L180: ⚠️ "代替" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+  L184: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L187: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/db-migration-oracle-postgresql/SKILL.md
+  L8: ❌ "完全" (誇大表現) → 機能事実で言い換え
+  L260: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L334: ⚠️ "代替" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+  L341: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/incident-rca-ja/PROMPT.md
+  L141: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L145: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/incident-rca-ja/SKILL.md
+  L169: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-audit/PROMPT.md
+  L56: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L66: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L125: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L129: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L130: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-audit/SKILL.md
+  L67: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L78: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L194: ❌ "完全" (誇大表現) → 機能事実で言い換え
+  L202: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L203: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-setup-cloudflare/PROMPT.md
+  L135: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L137: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-setup-cloudflare/SKILL.md
+  L178: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-setup-communication/PROMPT.md
+  L1: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L20: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L33: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L131: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L139: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L140: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L148: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L172: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L174: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-setup-communication/SKILL.md
+  L3: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L6: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L20: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L33: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L72: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L157: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L161: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L180: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L181: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L190: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L229: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-setup-db/PROMPT.md
+  L24: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L156: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L159: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-setup-db/SKILL.md
+  L24: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L195: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-setup-db-all/PROMPT.md
+  L82: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L213: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-setup-db-all/SKILL.md
+  L104: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L305: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-setup-enterprise-ja/PROMPT.md
+  L228: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L231: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-setup-enterprise-ja/SKILL.md
+  L250: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-setup-github/PROMPT.md
+  L132: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L134: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-setup-github/SKILL.md
+  L167: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-setup-monitoring/PROMPT.md
+  L102: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L156: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L158: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/mcp-setup-monitoring/SKILL.md
+  L119: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L199: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/migration-cobol-typescript/PROMPT.md
+  L52: ❌ "保証" (誇大表現) → 機能事実で言い換え
+  L204: ❌ "完全" (誇大表現) → 機能事実で言い換え
+  L228: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L251: ❌ "保証" (誇大表現) → 機能事実で言い換え
+  L270: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L351: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L353: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/migration-cobol-typescript/SKILL.md
+  L48: ❌ "保証" (誇大表現) → 機能事実で言い換え
+  L200: ❌ "完全" (誇大表現) → 機能事実で言い換え
+  L224: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L247: ❌ "保証" (誇大表現) → 機能事実で言い換え
+  L266: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L349: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/migration-csharp-typescript/PROMPT.md
+  L40: ⚠️ "代替" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+  L48: ⚠️ "代替" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+  L49: ⚠️ "代替" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+  L102: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L293: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L344: ⚠️ "代替" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+  L373: ⚠️ "代替" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+  L380: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/migration-csharp-typescript/SKILL.md
+  L36: ⚠️ "代替" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+  L44: ⚠️ "代替" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+  L45: ⚠️ "代替" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+  L98: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L290: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L341: ⚠️ "代替" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+  L370: ⚠️ "代替" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+
+[CHECK] D:/aiworker/products/gk-skills/migration-svn-git/PROMPT.md
+  L68: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L218: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L219: ❌ "完全" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/migration-svn-git/SKILL.md
+  L90: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L94: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L95: ❌ "完全" (誇大表現) → 機能事実で言い換え
+  L302: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L305: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L306: ❌ "完全" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/migration-vbnet-aspnetcore/PROMPT.md
+  L88: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L243: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L320: ❌ "完全" (誇大表現) → 機能事実で言い換え
+  L325: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/migration-vbnet-aspnetcore/SKILL.md
+  L84: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L239: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L316: ❌ "完全" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/migration-vbnet-typescript/PROMPT.md
+  L38: ❌ "Crystal Reports" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L48: ❌ "Crystal Reports" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L117: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L289: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L368: ⚠️ "代替" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+  L401: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L405: ❌ "保証" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/migration-vbnet-typescript/SKILL.md
+  L40: ❌ "Crystal Reports" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L50: ❌ "Crystal Reports" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L119: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L292: ❌ "唯一" (誇大表現) → 機能事実で言い換え
+  L375: ⚠️ "代替" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+  L410: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L414: ❌ "保証" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/onboarding-doc-ja/PROMPT.md
+  L164: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L167: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/onboarding-doc-ja/SKILL.md
+  L194: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/perf-review-sql/PROMPT.md
+  L227: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/README.md
+  L50: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L89: ❌ "完全" (誇大表現) → 機能事実で言い換え
+  L99: ❌ "完全" (誇大表現) → 機能事実で言い換え
+  L140: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L197: ❌ "完全" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/refactor-enterprise-ja/PROMPT.md
+  L233: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/security-review-web/PROMPT.md
+  L243: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L245: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/security-review-web/SKILL.md
+  L239: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-cobol-db2/PROMPT.md
+  L102: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-csharp-oracle/PROMPT.md
+  L161: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L164: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-csharp-oracle/SKILL.md
+  L160: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-csharp-postgresql/PROMPT.md
+  L143: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-csharp-sqlserver/PROMPT.md
+  L81: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-enterprise-ja/PROMPT.md
+  L83: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L172: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L186: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-enterprise-ja/SKILL.md
+  L169: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L185: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-java-mysql/PROMPT.md
+  L158: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-java-oracle/PROMPT.md
+  L55: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L155: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-java-oracle/SKILL.md
+  L51: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-java-postgresql/PROMPT.md
+  L164: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-java-sqlserver/PROMPT.md
+  L153: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-typescript-mysql/PROMPT.md
+  L80: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-typescript-postgresql/PROMPT.md
+  L94: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L96: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-typescript-postgresql/SKILL.md
+  L94: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-typescript-sqlserver/PROMPT.md
+  L162: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-vbnet-oracle/PROMPT.md
+  L127: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L130: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L131: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-vbnet-oracle/SKILL.md
+  L126: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L127: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-vbnet-sqlserver/PROMPT.md
+  L108: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L110: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L111: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/spec-gen-vbnet-sqlserver/SKILL.md
+  L106: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L107: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/test-gen-enterprise-ja/PROMPT.md
+  L202: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+  L205: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L206: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L331: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/test-gen-enterprise-ja/SKILL.md
+  L201: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+  L202: ❌ "必ず" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/TEXTBOOK_MAPPING.md
+  L3: ❌ "完全" (誇大表現) → 機能事実で言い換え
+  L13: ⚠️ "よりも" (マウント表現) → 「選択肢」「○○向け」など中立表現に
+  L34: ❌ "完全" (誇大表現) → 機能事実で言い換え
+  L57: ❌ "完全" (誇大表現) → 機能事実で言い換え
+  L80: ❌ "Slack" (競合固有名詞) → 削除または一般化 (例: 帳票ツール / UIライブラリ)
+  L121: ❌ "完全" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/todo-resolution-ja/PROMPT.md
+  L148: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+
+[CHECK] D:/aiworker/products/gk-skills/todo-resolution-ja/SKILL.md
+  L148: ❌ "絶対" (誇大表現) → 機能事実で言い換え
+---
+対象ファイル数: 90
+検出件数: total=202 ❌block=187 ⚠️warn=15

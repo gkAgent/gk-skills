@@ -1,7 +1,7 @@
 # gk-skills — Enterprise Claude Code Skills for Japanese SI Teams
 
-> **42 skills** covering the full Japanese SI project lifecycle.
-> Built from real projects: 300k-line VB.NET migrations, Oracle 19c systems, COBOL batch modernization.
+> **44 skills** covering the Japanese SI project lifecycle from spec generation to migration.
+> Built from real projects: large-scale VB.NET migrations, Oracle 19c systems, COBOL batch modernization.
 
 ---
 
@@ -96,7 +96,7 @@ Claude asks clarifying questions first (Phase 0), then runs to completion — no
 | [migration-csharp-typescript](./migration-csharp-typescript/SKILL.md) | C# → TypeScript/Next.js/NestJS | `npx skills@latest add gkAgent/gk-skills/migration-csharp-typescript` |
 | [migration-vbnet-aspnetcore](./migration-vbnet-aspnetcore/SKILL.md) | VB.NET → ASP.NET Core (.NET内、低リスク) | `npx skills@latest add gkAgent/gk-skills/migration-vbnet-aspnetcore` |
 | [migration-cobol-typescript](./migration-cobol-typescript/SKILL.md) | COBOL → TypeScript/Node.js (COMP-3/JCL対応) | `npx skills@latest add gkAgent/gk-skills/migration-cobol-typescript` |
-| [db-migration-oracle-postgresql](./db-migration-oracle-postgresql/SKILL.md) | Oracle → PostgreSQL (ROWNUM/PL/SQL/型変換完全対応) | `npx skills@latest add gkAgent/gk-skills/db-migration-oracle-postgresql` |
+| [db-migration-oracle-postgresql](./db-migration-oracle-postgresql/SKILL.md) | Oracle → PostgreSQL (ROWNUM / PL/SQL / 型変換パターン網羅) | `npx skills@latest add gkAgent/gk-skills/db-migration-oracle-postgresql` |
 
 ### Quality & Security — 3 skills
 
@@ -194,7 +194,7 @@ DB: Oracle 19c
 ## EmployeeService — 詳細仕様書
 
 ### クラス概要
-...（以降、完全な仕様書が生成される）
+...（以降、仕様書フォーマットで出力される）
 ```
 
 ---
