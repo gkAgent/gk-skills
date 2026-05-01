@@ -49,7 +49,7 @@
 
 - MQ Series / IBM MQ → RabbitMQ / Kafka への置き換え検討
 - IMS 階層DB → RDB への再設計（データモデルの根本変更）
-- COBOL の10進固定小数点演算（金融計算） → `decimal.js` / `big.js` で精度保証
+- COBOL の10進固定小数点演算（金融計算） → `decimal.js` / `big.js` で誤差を抑える
 - `SORT` / `MERGE` ステートメント → DB ORDER BY またはメモリソート
 
 ---
@@ -201,7 +201,7 @@ cron.schedule("0 2 * * *", () => runDailyReport().catch(console.error));
 
 ## Phase 1.5: プログラム責務定義（アセスメント補完）
 
-**COBOL に Designer ファイルは存在しない。代わりに PGM 単位の責務と依存関係を完全に洗い出す。省略禁止。**
+**COBOL に Designer ファイルは存在しない。代わりに PGM 単位の責務と依存関係を漏らさず洗い出す。省略禁止。**
 
 ### PGM 責務テーブル（全 PGM 分作成）
 
@@ -248,7 +248,7 @@ cron.schedule("0 2 * * *", () => runDailyReport().catch(console.error));
 - EXEC SQL INSERT: 集計結果をDB書き込み
 
 **移行後の設計:**
-- `Decimal` 型 (decimal.js): WS-AMOUNT の精度保証
+- `Decimal` 型 (decimal.js): WS-AMOUNT の精度を維持
 - Node.js readline ストリーム: PERFORM UNTIL EOF 対応
 - `calcUtil()` モジュール: CALCUTIL CALLの TypeScript 化
 - Prisma INSERT: EXEC SQL の置き換え
