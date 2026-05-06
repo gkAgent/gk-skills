@@ -1,13 +1,14 @@
 ---
 name: winforms-ui-test-flaui
-description: Generates WinForms UI test specifications and FlaUI + xUnit test code for .NET Framework 4.8/4.8.1 WinForms applications. Use when creating UI test specs from screen designs, generating FlaUI+xUnit C# test code for WinForms forms (TextBox/Button/ComboBox/DataGridView/Label), setting up a separate test project without touching the target app, analyzing test failures with UIA tree dumps, or writing integration test scenarios across multiple forms. Works with both Claude Code and GitHub Copilot. Target apps can be VB.NET or C#; test project is always C#.
+description: Interactive guide for WinForms UI test automation using FlaUI + xUnit. Use when creating UI test specs from screen designs, generating FlaUI+xUnit C# test code for .NET Framework 4.8/4.8.1 WinForms (TextBox/Button/ComboBox/DataGridView/Label), setting up an external test project without touching the target app, analyzing test failures with UIA tree dumps, or writing integration test scenarios across multiple forms. Target apps can be VB.NET or C#; test project is always C#. NOTE: This skill is Claude Code only. For GitHub Copilot users, see products/gk-test/prompts/ for copy-paste templates.
 ---
 
-# WinForms UI テスト — FlaUI + xUnit ノウハウ集
+# WinForms UI テスト — FlaUI + xUnit（Claude Code スキル）
 
-> .NET Framework 4.8/4.8.1 WinForms アプリの UI テストを外付けで自動化する。
-> 本体コードへの変更ゼロ。Claude Code / GitHub Copilot 両対応。
-> 詳細ガイド: `products/gk-test/` の HTML ノウハウ集を参照。
+> このスキルは **Claude Code 専用**です。
+> GitHub Copilot ユーザーは `products/gk-test/prompts/` のコピペ用テンプレートを使ってください。
+>
+> 詳細ガイド: `products/gk-test/` の HTML ノウハウ集（01〜08章）
 
 ---
 
